@@ -34,10 +34,10 @@ const NOTIFICATION_CONFIGS: Record<FormType, NotificationConfig> = {
 
 function getTodayString(): string {
   const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  const brDate = now.toLocaleDateString("en-CA", {
+    timeZone: "America/Sao_Paulo",
+  });
+  return brDate; // returns YYYY-MM-DD
 }
 
 async function sendNotifications(formType: FormType) {
@@ -128,10 +128,10 @@ async function sendNotifications(formType: FormType) {
   );
 }
 
-// 8h BRT = 11h UTC
+// 8h BRT
 export const morningNotification = onSchedule(
   {
-    schedule: "0 11 * * *",
+    schedule: "0 8 * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
@@ -140,10 +140,10 @@ export const morningNotification = onSchedule(
   }
 );
 
-// 12h BRT = 15h UTC
+// 12h BRT
 export const noonNotification = onSchedule(
   {
-    schedule: "0 15 * * *",
+    schedule: "0 12 * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
@@ -152,10 +152,10 @@ export const noonNotification = onSchedule(
   }
 );
 
-// 20h BRT = 23h UTC
+// 20h BRT
 export const eveningNotification = onSchedule(
   {
-    schedule: "0 23 * * *",
+    schedule: "0 20 * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
