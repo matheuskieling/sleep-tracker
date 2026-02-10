@@ -36,7 +36,9 @@ Personal sleep and habit tracking app built with Expo + React Native + Firebase.
 ## Conventions
 
 - All UI text is in Brazilian Portuguese (PT-BR)
-- Date format: YYYY-MM-DD for Firestore document IDs
+- Date display format: DD-MM-YYYY (all user-facing dates)
+- Date internal format: YYYY-MM-DD (Firestore document IDs and range queries only)
+- Use `toDisplayDate()` / `fromDisplayDate()` from `src/utils/date.ts` to convert between formats
 - Firestore data is scoped per user: `users/{userId}/entries/{YYYY-MM-DD}`
 - One document per day with 3 optional sections: morning, noon, evening
 - Form field enums use snake_case Portuguese values

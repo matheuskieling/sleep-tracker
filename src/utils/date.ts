@@ -1,12 +1,17 @@
 /**
- * Get today's date string in YYYY-MM-DD format (BRT timezone).
+ * Internal format: YYYY-MM-DD (used for Firestore document IDs and range queries).
+ * Display format: DD-MM-YYYY (shown to the user everywhere in the UI).
+ */
+
+/**
+ * Get today's date string in internal format (YYYY-MM-DD).
  */
 export function getTodayString(): string {
   return formatDate(new Date());
 }
 
 /**
- * Format a Date to YYYY-MM-DD string.
+ * Format a Date to internal YYYY-MM-DD string.
  */
 export function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -16,7 +21,7 @@ export function formatDate(date: Date): string {
 }
 
 /**
- * Parse a YYYY-MM-DD string to a Date.
+ * Parse an internal YYYY-MM-DD string to a Date.
  */
 export function parseDate(dateString: string): Date {
   const [year, month, day] = dateString.split("-").map(Number);
@@ -24,30 +29,38 @@ export function parseDate(dateString: string): Date {
 }
 
 /**
- * Format date for display in PT-BR (e.g., "10 de fevereiro de 2026").
+ * Convert internal YYYY-MM-DD to display DD-MM-YYYY.
+ */
+export function toDisplayDate(dateString: string): string {
+  const [year, month, day] = dateString.split("-");
+  return `${day}-${month}-${year}`;
+}
+
+/**
+ * Convert display DD-MM-YYYY to internal YYYY-MM-DD.
+ */
+export function fromDisplayDate(displayDate: string): string {
+  const [day, month, year] = displayDate.split("-");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Format date for display (e.g., "10-02-2026").
  */
 export function formatDateDisplay(dateString: string): string {
-  const date = parseDate(dateString);
-  return date.toLocaleDateString("pt-BR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  return toDisplayDate(dateString);
 }
 
 /**
  * Format date short (e.g., "10/02").
  */
 export function formatDateShort(dateString: string): string {
-  const date = parseDate(dateString);
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-  });
+  const [, month, day] = dateString.split("-");
+  return `${day}/${month}`;
 }
 
 /**
- * Get an array of date strings for a range.
+ * Get an array of date strings (internal format) for a range.
  */
 export function getDateRange(startDate: string, endDate: string): string[] {
   const dates: string[] = [];
@@ -63,7 +76,7 @@ export function getDateRange(startDate: string, endDate: string): string[] {
 }
 
 /**
- * Get the date string for N days ago.
+ * Get the date string (internal format) for N days ago.
  */
 export function daysAgo(n: number): string {
   const date = new Date();
