@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useTodayStatus } from "../../src/hooks/useEntry";
 import { FORM_TITLES, FORM_DESCRIPTIONS, FORM_ICONS } from "../../src/config/constants";
@@ -16,14 +17,14 @@ export default function FormsScreen() {
 
   if (loading) {
     return (
-      <View className="flex-1 bg-primary-950 justify-center items-center">
+      <View className="flex-1 bg-primary-950 justify-center items-center" style={{ paddingTop: Constants.statusBarHeight }}>
         <ActivityIndicator color="#818cf8" size="large" />
       </View>
     );
   }
 
   return (
-    <ScrollView className="flex-1 bg-primary-950">
+    <ScrollView className="flex-1 bg-primary-950" style={{ paddingTop: Constants.statusBarHeight }} contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
         <Text className="text-indigo-200 text-sm mb-4">
           Preencha os formulários diários para acompanhar seus hábitos.

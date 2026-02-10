@@ -9,7 +9,7 @@ export default function HistoryScreen() {
   const { entries, loading } = useEntryRange(daysAgo(range), daysAgo(0));
 
   return (
-    <ScrollView className="flex-1 bg-primary-950">
+    <ScrollView className="flex-1 bg-primary-950" contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
         <View className="flex-row gap-2 mb-4">
           {[7, 14, 30].map((days) => (

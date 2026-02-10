@@ -1,15 +1,16 @@
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useTodayStatus, useEntryRange } from "../../src/hooks/useEntry";
 import { DailyProgress } from "../../src/components/dashboard/DailyProgress";
 import { QuickStats } from "../../src/components/dashboard/QuickStats";
 import { signOut } from "../../src/services/auth";
-import { formatDateDisplay, daysAgo } from "../../src/utils/date";
+import { daysAgo } from "../../src/utils/date";
 import type { FormType } from "../../src/types/entry";
 
 export default function DashboardScreen() {
-  const { user } = useAuth();
+  const { user, userName } = useAuth();
   const router = useRouter();
   const { status, loading: statusLoading } = useTodayStatus();
   const { entries, loading: entriesLoading } = useEntryRange(daysAgo(7), daysAgo(0));
@@ -23,15 +24,12 @@ export default function DashboardScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-primary-950">
+    <ScrollView className="flex-1 bg-primary-950" style={{ paddingTop: Constants.statusBarHeight }} contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
-        <View className="flex-row justify-between items-center mb-6">
+        <View className="flex-row justify-between items-center mb-8">
           <View>
             <Text className="text-2xl font-bold text-indigo-100">
-              Olá!
-            </Text>
-            <Text className="text-indigo-300 text-sm mt-1">
-              {formatDateDisplay(daysAgo(0))}
+              Olá, {userName || "usuário"}!
             </Text>
           </View>
           <TouchableOpacity
