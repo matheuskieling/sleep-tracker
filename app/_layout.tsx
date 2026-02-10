@@ -1,7 +1,7 @@
 import "../global.css";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AuthProvider, useAuth } from "../src/contexts/AuthContext";
 import { messaging } from "../src/config/firebase";
