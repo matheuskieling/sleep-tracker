@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../config/firebase";
 import { getUserName } from "../services/auth";
+import { registerForPushNotifications, onTokenRefresh } from "../services/messaging";
 
 interface AuthContextData {
   user: any;
@@ -22,18 +23,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let unsubscribeTokenRefresh: (() => void) | null = null;
+
     const unsubscribe = auth().onAuthStateChanged(async (firebaseUser: any) => {
       setUser(firebaseUser);
       if (firebaseUser) {
         const name = await getUserName(firebaseUser.uid);
         setUserName(name);
+        registerForPushNotifications(firebaseUser.uid).catch(console.error);
+        unsubscribeTokenRefresh = onTokenRefresh(firebaseUser.uid);
       } else {
         setUserName("");
+        if (unsubscribeTokenRefresh) {
+          unsubscribeTokenRefresh();
+          unsubscribeTokenRefresh = null;
+        }
       }
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      if (unsubscribeTokenRefresh) {
+        unsubscribeTokenRefresh();
+      }
+    };
   }, []);
 
   async function refreshUserName() {
