@@ -52,3 +52,7 @@ GoogleService-Info.plist
 # Cloud Functions
 functions/node_modules/
 functions/lib/
+firebase-debug.log
+
+# Windows artifacts
+nul
