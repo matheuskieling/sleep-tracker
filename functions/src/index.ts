@@ -132,10 +132,9 @@ async function sendNotifications(formType: FormType) {
   );
 }
 
-// TEST: every 2 minutes (revert to production schedules after testing)
 export const morningNotification = onSchedule(
   {
-    schedule: "*/2 * * * *",
+    schedule: "0 8 * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
@@ -146,7 +145,7 @@ export const morningNotification = onSchedule(
 
 export const noonNotification = onSchedule(
   {
-    schedule: "*/2 * * * *",
+    schedule: "0 12 * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
@@ -157,7 +156,7 @@ export const noonNotification = onSchedule(
 
 export const eveningNotification = onSchedule(
   {
-    schedule: "*/2 * * * *",
+    schedule: "0 20 * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
