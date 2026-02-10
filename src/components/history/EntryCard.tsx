@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 import type { DayEntry } from "../../types/entry";
 import { formatDateDisplay } from "../../utils/date";
@@ -30,12 +31,17 @@ function FormIndicator({ icon, filled }: FormIndicatorProps) {
 }
 
 export function EntryCard({ entry }: EntryCardProps) {
+  const router = useRouter();
   const hasMorning = !!entry.morning;
   const hasNoon = !!entry.noon;
   const hasEvening = !!entry.evening;
 
   return (
-    <View className="bg-primary-900 rounded-2xl p-4 mb-3">
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => router.push(`/history/${entry.dateString}`)}
+      className="bg-primary-900 rounded-2xl p-4 mb-3"
+    >
       {/* Header row: date + form indicators */}
       <View className="flex-row items-center justify-between mb-2">
         <Text className="text-indigo-100 text-sm font-semibold flex-1" numberOfLines={1}>
@@ -74,6 +80,6 @@ export function EntryCard({ entry }: EntryCardProps) {
           Nenhum formulário preenchido
         </Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 }
