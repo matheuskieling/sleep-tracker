@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "expo-router";
 import { useEntryRange } from "../../src/hooks/useEntry";
 import { EntryCard } from "../../src/components/history/EntryCard";
 import { daysAgo } from "../../src/utils/date";
 
 export default function HistoryScreen() {
   const [range, setRange] = useState(7);
-  const { entries, loading } = useEntryRange(daysAgo(range), daysAgo(0));
+  const { entries, loading, refresh } = useEntryRange(daysAgo(range), daysAgo(0));
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
 
   return (
     <ScrollView className="flex-1 bg-primary-950" contentContainerStyle={{ paddingBottom: 100 }}>

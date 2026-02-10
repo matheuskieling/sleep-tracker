@@ -1,6 +1,7 @@
+import { useCallback } from "react";
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import Constants from "expo-constants";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useTodayStatus, useEntryRange } from "../../src/hooks/useEntry";
 import { DailyProgress } from "../../src/components/dashboard/DailyProgress";
@@ -12,8 +13,15 @@ import type { FormType } from "../../src/types/entry";
 export default function DashboardScreen() {
   const { user, userName } = useAuth();
   const router = useRouter();
-  const { status, loading: statusLoading } = useTodayStatus();
-  const { entries, loading: entriesLoading } = useEntryRange(daysAgo(7), daysAgo(0));
+  const { status, loading: statusLoading, refresh: refreshStatus } = useTodayStatus();
+  const { entries, loading: entriesLoading, refresh: refreshEntries } = useEntryRange(daysAgo(7), daysAgo(0));
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshStatus();
+      refreshEntries();
+    }, [refreshStatus, refreshEntries])
+  );
 
   function handleFormPress(type: FormType) {
     router.push(`/form/${type}` as any);
