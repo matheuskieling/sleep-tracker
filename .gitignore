@@ -30,7 +30,12 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# IDE
+.idea/
+.vscode/
+
 # local env files
+.env
 .env*.local
 
 # typescript
@@ -39,3 +44,11 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Firebase config files (contain project-specific keys)
+google-services.json
+GoogleService-Info.plist
+
+# Cloud Functions
+functions/node_modules/
+functions/lib/
