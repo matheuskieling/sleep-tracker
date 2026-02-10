@@ -44,11 +44,10 @@ async function sendNotifications(formType: FormType) {
   const config = NOTIFICATION_CONFIGS[formType];
   const today = getTodayString();
 
-  // Get all users with notifications enabled and a valid FCM token
+  // Get all users with notifications enabled (filter token in code to avoid composite index)
   const usersSnapshot = await db
     .collection("users")
     .where("notificationsEnabled", "==", true)
-    .where("fcmToken", "!=", "")
     .get();
 
   const sendPromises: Promise<void>[] = [];
@@ -57,6 +56,10 @@ async function sendNotifications(formType: FormType) {
     const userId = userDoc.id;
     const userData = userDoc.data();
     const token = userData.fcmToken as string;
+
+    if (!token) {
+      continue;
+    }
 
     // Check if the user already submitted this form today
     const entryDoc = await db
@@ -117,6 +120,7 @@ async function sendNotifications(formType: FormType) {
         ) {
           return db.collection("users").doc(userId).update({ fcmToken: "" });
         }
+        return;
       });
 
     sendPromises.push(promise as Promise<void>);
@@ -128,10 +132,10 @@ async function sendNotifications(formType: FormType) {
   );
 }
 
-// 8h BRT
+// TEST: every 2 minutes (revert to production schedules after testing)
 export const morningNotification = onSchedule(
   {
-    schedule: "0 8 * * *",
+    schedule: "*/2 * * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
@@ -140,10 +144,9 @@ export const morningNotification = onSchedule(
   }
 );
 
-// 12h BRT
 export const noonNotification = onSchedule(
   {
-    schedule: "0 12 * * *",
+    schedule: "*/2 * * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
@@ -152,10 +155,9 @@ export const noonNotification = onSchedule(
   }
 );
 
-// 20h BRT
 export const eveningNotification = onSchedule(
   {
-    schedule: "0 20 * * *",
+    schedule: "*/2 * * * *",
     timeZone: "America/Sao_Paulo",
     retryCount: 1,
   },
