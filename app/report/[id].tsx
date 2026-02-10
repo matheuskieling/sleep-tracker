@@ -1,0 +1,84 @@
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { useLocalSearchParams, useRouter, Stack } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAuth } from "../../src/hooks/useAuth";
+import { useReport } from "../../src/hooks/useReport";
+import { ReportView } from "../../src/components/report/ReportView";
+import { deleteReport } from "../../src/services/firestore";
+import { toDisplayDate } from "../../src/utils/date";
+
+export default function ReportDetailScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { user } = useAuth();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { report, loading } = useReport(id);
+
+  async function handleDelete() {
+    if (!user || !id) return;
+    Alert.alert("Excluir relatório", "Tem certeza?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Excluir",
+        style: "destructive",
+        onPress: async () => {
+          await deleteReport(user.uid, id);
+          router.back();
+        },
+      },
+    ]);
+  }
+
+  if (loading) {
+    return (
+      <>
+        <Stack.Screen options={{ title: "Relatório" }} />
+        <View className="flex-1 bg-primary-950 items-center justify-center">
+          <ActivityIndicator size="large" color="#6366f1" />
+        </View>
+      </>
+    );
+  }
+
+  if (!report) {
+    return (
+      <>
+        <Stack.Screen options={{ title: "Relatório" }} />
+        <View className="flex-1 bg-primary-950 items-center justify-center">
+          <Text className="text-indigo-400 text-sm">Relatório não encontrado.</Text>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Stack.Screen options={{ title: "Relatório" }} />
+      <ScrollView className="flex-1 bg-primary-950" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
+        <View className="p-5">
+          <Text className="text-indigo-100 text-base font-semibold mb-1">
+            {toDisplayDate(report.startDate)} → {toDisplayDate(report.endDate)}
+          </Text>
+
+          {report.createdAt?.toDate && (
+            <Text className="text-indigo-400 text-xs mb-2">
+              Criado em {report.createdAt.toDate().toLocaleDateString("pt-BR")}
+            </Text>
+          )}
+
+          <ReportView report={report.content} />
+
+          <TouchableOpacity
+            onPress={handleDelete}
+            activeOpacity={0.8}
+            className="rounded-xl p-4 items-center mt-6 bg-red-900/40 border border-red-800"
+          >
+            <Text className="text-red-300 font-semibold text-sm">
+              Excluir relatório
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </>
+  );
+}
