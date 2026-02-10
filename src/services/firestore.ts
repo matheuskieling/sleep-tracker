@@ -4,6 +4,7 @@ import type {
   MorningEntry,
   NoonEntry,
   EveningEntry,
+  Report,
 } from "../types/entry";
 import { getTodayString } from "../utils/date";
 
@@ -138,4 +139,52 @@ export async function getTodayStatus(
     noon: !!entry?.noon,
     evening: !!entry?.evening,
   };
+}
+
+// --- Reports ---
+
+function reportsCollection(userId: string) {
+  return firestore().collection("users").doc(userId).collection("reports");
+}
+
+export async function saveReport(
+  userId: string,
+  startDate: string,
+  endDate: string,
+  content: string
+): Promise<string> {
+  const docRef = await reportsCollection(userId).add({
+    startDate,
+    endDate,
+    content,
+    createdAt: firestore.FieldValue.serverTimestamp(),
+  });
+  return docRef.id;
+}
+
+export async function getReports(userId: string): Promise<Report[]> {
+  const snapshot = await reportsCollection(userId)
+    .orderBy("createdAt", "desc")
+    .get();
+
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Report[];
+}
+
+export async function getReport(
+  userId: string,
+  reportId: string
+): Promise<Report | null> {
+  const doc = await reportsCollection(userId).doc(reportId).get();
+  if (!doc.exists) return null;
+  return { id: doc.id, ...doc.data() } as Report;
+}
+
+export async function deleteReport(
+  userId: string,
+  reportId: string
+): Promise<void> {
+  await reportsCollection(userId).doc(reportId).delete();
 }

@@ -64,3 +64,11 @@ export interface UserProfile {
   notificationsEnabled: boolean;
   fcmToken: string;
 }
+
+export interface Report {
+  id: string;
+  startDate: string;  // YYYY-MM-DD
+  endDate: string;    // YYYY-MM-DD
+  content: string;    // markdown
+  createdAt: any;     // server timestamp
+}
