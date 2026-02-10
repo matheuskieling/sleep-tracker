@@ -2,13 +2,13 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useAuth } from "../../src/hooks/useAuth";
-import { useEntryRange } from "../../src/hooks/useEntry";
 import { useReports } from "../../src/hooks/useReport";
 import { DateRangePicker } from "../../src/components/report/DateRangePicker";
 import { ReportView } from "../../src/components/report/ReportView";
 import { ReportCard } from "../../src/components/report/ReportCard";
-import { generateReport } from "../../src/services/ai";
-import { saveReport, deleteReport } from "../../src/services/firestore";
+import { generateReport, buildReportPrompt } from "../../src/services/ai";
+import * as Clipboard from "expo-clipboard";
+import { getEntriesInRange, saveReport, deleteReport } from "../../src/services/firestore";
 import { daysAgo } from "../../src/utils/date";
 
 export default function ReportScreen() {
@@ -17,33 +17,61 @@ export default function ReportScreen() {
   const [endDate, setEndDate] = useState(daysAgo(0));
   const [report, setReport] = useState("");
   const [generating, setGenerating] = useState(false);
+  const [copyingPrompt, setCopyingPrompt] = useState(false);
+  const [promptCopied, setPromptCopied] = useState(false);
 
-  const { entries, loading: entriesLoading } = useEntryRange(startDate, endDate);
   const { reports, loading: reportsLoading, refresh: refreshReports } = useReports();
 
   async function handleGenerate() {
-    if (entries.length === 0) {
-      Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
-      return;
-    }
+    if (!user) return;
 
     setGenerating(true);
     setReport("");
 
     try {
+      const entries = await getEntriesInRange(user.uid, startDate, endDate);
+
+      if (entries.length === 0) {
+        Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
+        return;
+      }
+
       const result = await generateReport(entries);
       setReport(result);
 
-      if (user) {
-        await saveReport(user.uid, startDate, endDate, result);
-        refreshReports();
-      }
+      await saveReport(user.uid, startDate, endDate, result);
+      refreshReports();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erro desconhecido";
       console.error("Erro ao gerar relatório:", err);
       Alert.alert("Erro", message);
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function handleCopyPrompt() {
+    if (!user) return;
+
+    setCopyingPrompt(true);
+
+    try {
+      const entries = await getEntriesInRange(user.uid, startDate, endDate);
+
+      if (entries.length === 0) {
+        Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
+        return;
+      }
+
+      const prompt = buildReportPrompt(entries);
+      await Clipboard.setStringAsync(prompt);
+      setPromptCopied(true);
+      setTimeout(() => setPromptCopied(false), 2000);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Erro desconhecido";
+      Alert.alert("Erro", message);
+    } finally {
+      setCopyingPrompt(false);
     }
   }
 
@@ -78,7 +106,7 @@ export default function ReportScreen() {
 
         <TouchableOpacity
           onPress={handleGenerate}
-          disabled={generating || entriesLoading}
+          disabled={generating || copyingPrompt}
           activeOpacity={0.8}
           className={`rounded-xl p-4 items-center mt-4 ${
             generating ? "bg-indigo-800" : "bg-indigo-600"
@@ -94,6 +122,30 @@ export default function ReportScreen() {
           ) : (
             <Text className="text-indigo-100 font-semibold text-base">
               Gerar Relatório IA
+            </Text>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleCopyPrompt}
+          disabled={generating || copyingPrompt}
+          activeOpacity={0.8}
+          className={`rounded-xl p-4 items-center mt-3 border ${
+            promptCopied ? "border-green-500 bg-green-600/20" : "border-indigo-700 bg-indigo-500/10"
+          }`}
+        >
+          {copyingPrompt ? (
+            <View className="flex-row items-center">
+              <ActivityIndicator color="#a5b4fc" />
+              <Text className="text-indigo-300 font-semibold text-base ml-2">
+                Copiando...
+              </Text>
+            </View>
+          ) : (
+            <Text className={`font-semibold text-base ${
+              promptCopied ? "text-green-400" : "text-indigo-300"
+            }`}>
+              {promptCopied ? "Prompt copiado!" : "Copiar Prompt"}
             </Text>
           )}
         </TouchableOpacity>
