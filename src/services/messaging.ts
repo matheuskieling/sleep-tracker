@@ -51,10 +51,3 @@ export function onTokenRefresh(userId: string) {
 export function onForegroundMessage(callback: (message: any) => void) {
   return messaging().onMessage(callback);
 }
-
-/**
- * Background message handler — must be registered at module level.
- */
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  console.log("Background message received:", remoteMessage.messageId);
-});
