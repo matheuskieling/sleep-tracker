@@ -45,8 +45,7 @@ yarn-error.*
 /ios
 /android
 
-# Firebase config files (contain project-specific keys)
-google-services.json
+# Firebase config files (iOS)
 GoogleService-Info.plist
 
 # Cloud Functions
