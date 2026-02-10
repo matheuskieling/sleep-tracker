@@ -85,26 +85,24 @@ export async function generateReport(entries: DayEntry[]): Promise<string> {
       "Content-Type": "application/json",
       "x-api-key": API_KEY,
       "anthropic-version": "2023-06-01",
+      "anthropic-dangerous-direct-browser-access": "true",
     },
     body: JSON.stringify({
       model: "claude-sonnet-4-5-20250929",
-      max_tokens: 2048,
+      max_tokens: 1024,
       messages: [
         {
           role: "user",
-          content: `Você é um especialista em sono e saúde. Analise os seguintes dados de rastreamento de sono e hábitos de um usuário e forneça um relatório detalhado em português brasileiro.
+          content: `Analise os dados de sono e hábitos abaixo. Responda em português brasileiro com markdown conciso (até 4 seções curtas). Não inclua recomendações.
 
-Identifique:
+Foque em:
 1. Padrões de sono (duração, qualidade, consistência)
 2. Possíveis causas da sonolência diurna
-3. Correlações entre alimentação, exercício, e qualidade do sono
+3. Correlações entre alimentação, exercício e qualidade do sono
 4. Impacto do estresse e ansiedade no sono
-5. Recomendações práticas e personalizadas
 
-Dados do período:
-${formattedData}
-
-Forneça o relatório de forma clara e organizada, com seções e bullet points.`,
+Dados:
+${formattedData}`,
         },
       ],
     }),
