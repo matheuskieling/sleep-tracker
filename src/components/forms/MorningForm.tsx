@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { ScrollView, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { RadioGroup } from "../ui/RadioGroup";
 import { NumberInput } from "../ui/NumberInput";
@@ -31,15 +33,17 @@ const wakeSleepinessOptions = labelsToOptions(WAKE_SLEEPINESS_LABELS);
 
 interface MorningFormProps {
   onSubmit: (data: Omit<MorningEntry, "submittedAt">) => Promise<void>;
+  initialData?: MorningEntry;
 }
 
-export function MorningForm({ onSubmit }: MorningFormProps) {
-  const [hoursSlept, setHoursSlept] = useState<number>(7);
-  const [sleepQuality, setSleepQuality] = useState<string>("");
-  const [nightAwakenings, setNightAwakenings] = useState<number>(0);
-  const [dinner, setDinner] = useState<string>("");
-  const [wakeSleepiness, setWakeSleepiness] = useState<string>("");
-  const [observations, setObservations] = useState<string>("");
+export function MorningForm({ onSubmit, initialData }: MorningFormProps) {
+  const insets = useSafeAreaInsets();
+  const [hoursSlept, setHoursSlept] = useState<number>(initialData?.hoursSlept ?? 7);
+  const [sleepQuality, setSleepQuality] = useState<string>(initialData?.sleepQuality ?? "");
+  const [nightAwakenings, setNightAwakenings] = useState<number>(initialData?.nightAwakenings ?? 0);
+  const [dinner, setDinner] = useState<string>(initialData?.dinner ?? "");
+  const [wakeSleepiness, setWakeSleepiness] = useState<string>(initialData?.wakeSleepiness ?? "");
+  const [observations, setObservations] = useState<string>(initialData?.observations ?? "");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -59,9 +63,10 @@ export function MorningForm({ onSubmit }: MorningFormProps) {
   };
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       className="flex-1 bg-primary-950"
       contentContainerClassName="px-4 py-6"
+      contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
       showsVerticalScrollIndicator={false}
     >
       <FormCard>
@@ -118,6 +123,6 @@ export function MorningForm({ onSubmit }: MorningFormProps) {
       </FormCard>
 
       <SubmitButton onPress={handleSubmit} loading={loading} label="Enviar" />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }

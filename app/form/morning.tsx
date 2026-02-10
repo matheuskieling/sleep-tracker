@@ -1,14 +1,15 @@
-import { Alert } from "react-native";
-import { View } from "react-native";
+import { Alert, View, ActivityIndicator } from "react-native";
 import { Stack, useRouter } from "expo-router";
 
 import { MorningForm } from "../../src/components/forms/MorningForm";
 import { submitMorningEntry } from "../../src/services/firestore";
 import { useAuth } from "../../src/hooks/useAuth";
+import { useEntry } from "../../src/hooks/useEntry";
 
 export default function MorningFormScreen() {
   const { user } = useAuth();
   const router = useRouter();
+  const { entry, loading } = useEntry();
 
   const handleSubmit = async (
     data: Parameters<typeof submitMorningEntry>[1]
@@ -31,7 +32,13 @@ export default function MorningFormScreen() {
           headerTintColor: "#e0e7ff",
         }}
       />
-      <MorningForm onSubmit={handleSubmit} />
+      {loading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#6366f1" />
+        </View>
+      ) : (
+        <MorningForm onSubmit={handleSubmit} initialData={entry?.morning} />
+      )}
     </View>
   );
 }
