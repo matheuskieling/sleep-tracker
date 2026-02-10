@@ -1,7 +1,8 @@
 import "../global.css";
-import { Slot, useRouter, useSegments } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AuthProvider, useAuth } from "../src/contexts/AuthContext";
 
 function RootLayoutNav() {
@@ -24,15 +25,17 @@ function RootLayoutNav() {
   return (
     <>
       <StatusBar style="light" />
-      <Slot />
+      <Stack screenOptions={{ headerShown: false }} />
     </>
   );
 }
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <KeyboardProvider>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </KeyboardProvider>
   );
 }
