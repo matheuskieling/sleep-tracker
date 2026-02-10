@@ -1,31 +1,50 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../config/firebase";
+import { getUserName } from "../services/auth";
 
 interface AuthContextData {
   user: any;
+  userName: string;
   loading: boolean;
+  refreshUserName: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({
   user: null,
+  userName: "",
   loading: true,
+  refreshUserName: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
+  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((firebaseUser: any) => {
+    const unsubscribe = auth().onAuthStateChanged(async (firebaseUser: any) => {
       setUser(firebaseUser);
+      if (firebaseUser) {
+        const name = await getUserName(firebaseUser.uid);
+        setUserName(name);
+      } else {
+        setUserName("");
+      }
       setLoading(false);
     });
 
     return unsubscribe;
   }, []);
 
+  async function refreshUserName() {
+    if (user) {
+      const name = await getUserName(user.uid);
+      setUserName(name);
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, userName, loading, refreshUserName }}>
       {children}
     </AuthContext.Provider>
   );

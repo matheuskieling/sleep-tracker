@@ -5,15 +5,18 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter, Link } from "expo-router";
 import { signUp } from "../../src/services/auth";
+import { useAuth } from "../../src/hooks/useAuth";
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { refreshUserName } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,7 +24,7 @@ export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
 
   async function handleSignUp() {
-    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       setError("Preencha todos os campos.");
       return;
     }
@@ -40,7 +43,8 @@ export default function RegisterScreen() {
     setLoading(true);
 
     try {
-      await signUp(email.trim(), password);
+      await signUp(email.trim(), password, name.trim());
+      await refreshUserName();
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
         setError("Este email já está em uso.");
@@ -58,14 +62,7 @@ export default function RegisterScreen() {
 
   return (
     <View className="flex-1 bg-primary-950">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
-      >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
+      <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom + 20 }}>
           <View className="flex-1 justify-center px-8">
             <Text className="text-4xl font-bold text-indigo-100 text-center mb-2">
               Sleep Tracker
@@ -81,6 +78,17 @@ export default function RegisterScreen() {
                 </Text>
               </View>
             )}
+
+            <Text className="text-indigo-200 text-sm mb-2 ml-1">Nome</Text>
+            <TextInput
+              className="bg-primary-900 border border-indigo-700 text-white rounded-xl p-4 mb-4"
+              placeholder="Seu nome"
+              placeholderTextColor="#6366f1"
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="words"
+              autoComplete="name"
+            />
 
             <Text className="text-indigo-200 text-sm mb-2 ml-1">Email</Text>
             <TextInput
@@ -145,8 +153,7 @@ export default function RegisterScreen() {
               </Link>
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

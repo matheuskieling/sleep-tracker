@@ -58,6 +58,7 @@ export interface DayEntry {
 }
 
 export interface UserProfile {
+  name: string;
   email: string;
   createdAt: any;
   notificationsEnabled: boolean;
