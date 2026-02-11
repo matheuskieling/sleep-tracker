@@ -51,6 +51,28 @@ export function formatDateDisplay(dateString: string): string {
   return toDisplayDate(dateString);
 }
 
+const WEEKDAY_NAMES = ["Domingo", "Segunda-feira", "Terca-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sabado"];
+const MONTH_NAMES = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+/**
+ * Get the weekday name for an internal YYYY-MM-DD string (e.g., "Quarta-feira").
+ */
+export function getWeekdayName(dateString: string): string {
+  const date = parseDate(dateString);
+  return WEEKDAY_NAMES[date.getDay()];
+}
+
+/**
+ * Format date as extended PT-BR string (e.g., "11 de fevereiro, 2026").
+ */
+export function formatDateExtended(dateString: string): string {
+  const date = parseDate(dateString);
+  const day = date.getDate();
+  const month = MONTH_NAMES[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} de ${month}, ${year}`;
+}
+
 /**
  * Format date short (e.g., "10/02").
  */
