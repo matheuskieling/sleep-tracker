@@ -1,5 +1,12 @@
 import { Platform, PermissionsAndroid } from "react-native";
-import { messaging, firestore } from "../config/firebase";
+import { messaging, db } from "../config/firebase";
+import {
+  requestPermission,
+  getToken,
+  onTokenRefresh as fcmOnTokenRefresh,
+  onMessage as fcmOnMessage,
+} from "@react-native-firebase/messaging";
+import { doc, updateDoc } from "@react-native-firebase/firestore";
 
 /**
  * Request notification permissions and register FCM token.
@@ -16,7 +23,7 @@ export async function registerForPushNotifications(userId: string) {
     }
   }
 
-  const authStatus = await messaging().requestPermission();
+  const authStatus = await requestPermission(messaging);
   const enabled = authStatus === 1 || authStatus === 2;
 
   if (!enabled) {
@@ -24,9 +31,9 @@ export async function registerForPushNotifications(userId: string) {
     return null;
   }
 
-  const token = await messaging().getToken();
+  const token = await getToken(messaging);
 
-  await firestore().collection("users").doc(userId).update({
+  await updateDoc(doc(db, "users", userId), {
     fcmToken: token,
     notificationsEnabled: true,
   });
@@ -38,8 +45,8 @@ export async function registerForPushNotifications(userId: string) {
  * Listen for token refresh and update Firestore.
  */
 export function onTokenRefresh(userId: string) {
-  return messaging().onTokenRefresh(async (token) => {
-    await firestore().collection("users").doc(userId).update({
+  return fcmOnTokenRefresh(messaging, async (token) => {
+    await updateDoc(doc(db, "users", userId), {
       fcmToken: token,
     });
   });
@@ -49,5 +56,5 @@ export function onTokenRefresh(userId: string) {
  * Handle foreground messages.
  */
 export function onForegroundMessage(callback: (message: any) => void) {
-  return messaging().onMessage(callback);
+  return fcmOnMessage(messaging, callback);
 }

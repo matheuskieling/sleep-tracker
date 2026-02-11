@@ -6,7 +6,7 @@ Personal sleep and habit tracking app built with Expo + React Native + Firebase.
 
 ## Tech Stack
 
-- **Expo SDK 52** with Expo Router (file-based routing)
+- **Expo SDK 54** with Expo Router (file-based routing)
 - **TypeScript** (strict)
 - **React Native Firebase** (`@react-native-firebase/app`, `/auth`, `/firestore`, `/messaging`)
 - **expo-dev-client** (required for native Firebase modules, cannot use Expo Go)
@@ -47,27 +47,31 @@ Personal sleep and habit tracking app built with Expo + React Native + Firebase.
 - Expo Router file-based navigation
 - `Link` components use inline `style` prop (not `className`) for text styling
 
-## Critical: Firebase Import Rules
+## Critical: Firebase Modular API
 
-All Firebase imports MUST go through `src/config/firebase.ts`. This file is the single source of truth:
+Uses the **modular API** (v21+) to avoid deprecation warnings. `src/config/firebase.ts` exports singleton instances:
 
 ```typescript
-import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import messaging from "@react-native-firebase/messaging";
-export { auth, firestore, messaging };
+import { getFirestore } from "@react-native-firebase/firestore";
+import { getAuth } from "@react-native-firebase/auth";
+import { getMessaging } from "@react-native-firebase/messaging";
+
+export const db = getFirestore();
+export const auth = getAuth();
+export const messaging = getMessaging();
 ```
 
-**DO NOT:**
-- Import directly from `@react-native-firebase/*` in any other file
-- Import Firebase types like `{ FirebaseFirestoreTypes }` or `{ FirebaseAuthTypes }` — these trigger full module evaluation and crash the app
-- Use `{ firebase }` named import from any Firebase package — it doesn't exist and crashes at module load
-- Use the old namespaced API (`firebase.auth()`, `firebase.firestore()`) — crashes silently
-
 **DO:**
-- Import from `../config/firebase` and call as functions: `auth()`, `firestore()`, `messaging()`
-- Use `firestore.FieldValue.serverTimestamp()` for timestamps
+- Import `db`, `auth`, `messaging` instances from `../config/firebase`
+- Import modular functions directly from `@react-native-firebase/*` packages (e.g. `collection`, `doc`, `getDoc`, `setDoc`, `signInWithEmailAndPassword`, `onAuthStateChanged`, `requestPermission`)
+- Use `serverTimestamp()` from `@react-native-firebase/firestore` (not `firestore.FieldValue.serverTimestamp()`)
 - Use `any` type instead of Firebase type imports where needed
+
+**DO NOT:**
+- Use the deprecated namespaced API (`auth()`, `firestore()`, `messaging()` as callable functions)
+- Import Firebase types like `{ FirebaseFirestoreTypes }` or `{ FirebaseAuthTypes }` — these trigger full module evaluation and crash the app
+- Use `{ firebase }` named import from any Firebase package
+- Chain methods on Firestore: `firestore().collection().doc()` — use modular `collection()`, `doc()`, `getDoc()`, `setDoc()` etc.
 
 ## Critical: Do NOT Use SafeAreaView
 

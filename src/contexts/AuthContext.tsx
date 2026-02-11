@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../config/firebase";
+import { onAuthStateChanged } from "@react-native-firebase/auth";
 import { getUserName } from "../services/auth";
 import { registerForPushNotifications, onTokenRefresh } from "../services/messaging";
 
@@ -25,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let unsubscribeTokenRefresh: (() => void) | null = null;
 
-    const unsubscribe = auth().onAuthStateChanged(async (firebaseUser: any) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: any) => {
       setUser(firebaseUser);
       if (firebaseUser) {
         const name = await getUserName(firebaseUser.uid);

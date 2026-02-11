@@ -1,4 +1,17 @@
-import { firestore } from "../config/firebase";
+import { db } from "../config/firebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  addDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+} from "@react-native-firebase/firestore";
+import { serverTimestamp } from "@react-native-firebase/firestore";
 import type {
   DayEntry,
   MorningEntry,
@@ -9,7 +22,7 @@ import type {
 import { getTodayString } from "../utils/date";
 
 function entriesCollection(userId: string) {
-  return firestore().collection("users").doc(userId).collection("entries");
+  return collection(db, "users", userId, "entries");
 }
 
 /**
@@ -29,9 +42,9 @@ export async function getEntry(
   userId: string,
   dateString: string
 ): Promise<DayEntry | null> {
-  const doc = await entriesCollection(userId).doc(dateString).get();
-  if (!doc.exists) return null;
-  return doc.data() as DayEntry;
+  const docSnap = await getDoc(doc(entriesCollection(userId), dateString));
+  if (!docSnap.exists) return null;
+  return docSnap.data() as DayEntry;
 }
 
 /**
@@ -42,22 +55,21 @@ export async function submitMorningEntry(
   data: Omit<MorningEntry, "submittedAt">
 ) {
   const dateString = getTodayString();
-  const now = firestore.FieldValue.serverTimestamp();
+  const now = serverTimestamp();
 
-  await entriesCollection(userId)
-    .doc(dateString)
-    .set(
-      {
-        dateString,
-        createdAt: now,
-        updatedAt: now,
-        morning: {
-          ...data,
-          submittedAt: now,
-        },
+  await setDoc(
+    doc(entriesCollection(userId), dateString),
+    {
+      dateString,
+      createdAt: now,
+      updatedAt: now,
+      morning: {
+        ...data,
+        submittedAt: now,
       },
-      { merge: true }
-    );
+    },
+    { merge: true }
+  );
 }
 
 /**
@@ -68,21 +80,20 @@ export async function submitNoonEntry(
   data: Omit<NoonEntry, "submittedAt">
 ) {
   const dateString = getTodayString();
-  const now = firestore.FieldValue.serverTimestamp();
+  const now = serverTimestamp();
 
-  await entriesCollection(userId)
-    .doc(dateString)
-    .set(
-      {
-        dateString,
-        updatedAt: now,
-        noon: {
-          ...data,
-          submittedAt: now,
-        },
+  await setDoc(
+    doc(entriesCollection(userId), dateString),
+    {
+      dateString,
+      updatedAt: now,
+      noon: {
+        ...data,
+        submittedAt: now,
       },
-      { merge: true }
-    );
+    },
+    { merge: true }
+  );
 }
 
 /**
@@ -93,21 +104,20 @@ export async function submitEveningEntry(
   data: Omit<EveningEntry, "submittedAt">
 ) {
   const dateString = getTodayString();
-  const now = firestore.FieldValue.serverTimestamp();
+  const now = serverTimestamp();
 
-  await entriesCollection(userId)
-    .doc(dateString)
-    .set(
-      {
-        dateString,
-        updatedAt: now,
-        evening: {
-          ...data,
-          submittedAt: now,
-        },
+  await setDoc(
+    doc(entriesCollection(userId), dateString),
+    {
+      dateString,
+      updatedAt: now,
+      evening: {
+        ...data,
+        submittedAt: now,
       },
-      { merge: true }
-    );
+    },
+    { merge: true }
+  );
 }
 
 /**
@@ -118,13 +128,15 @@ export async function getEntriesInRange(
   startDate: string,
   endDate: string
 ): Promise<DayEntry[]> {
-  const snapshot = await entriesCollection(userId)
-    .where("dateString", ">=", startDate)
-    .where("dateString", "<=", endDate)
-    .orderBy("dateString", "desc")
-    .get();
+  const q = query(
+    entriesCollection(userId),
+    where("dateString", ">=", startDate),
+    where("dateString", "<=", endDate),
+    orderBy("dateString", "desc")
+  );
+  const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => doc.data() as DayEntry);
+  return snapshot.docs.map((d) => d.data() as DayEntry);
 }
 
 /**
@@ -144,7 +156,7 @@ export async function getTodayStatus(
 // --- Reports ---
 
 function reportsCollection(userId: string) {
-  return firestore().collection("users").doc(userId).collection("reports");
+  return collection(db, "users", userId, "reports");
 }
 
 export async function saveReport(
@@ -153,23 +165,22 @@ export async function saveReport(
   endDate: string,
   content: string
 ): Promise<string> {
-  const docRef = await reportsCollection(userId).add({
+  const docRef = await addDoc(reportsCollection(userId), {
     startDate,
     endDate,
     content,
-    createdAt: firestore.FieldValue.serverTimestamp(),
+    createdAt: serverTimestamp(),
   });
   return docRef.id;
 }
 
 export async function getReports(userId: string): Promise<Report[]> {
-  const snapshot = await reportsCollection(userId)
-    .orderBy("createdAt", "desc")
-    .get();
+  const q = query(reportsCollection(userId), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
+  return snapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
   })) as Report[];
 }
 
@@ -177,14 +188,14 @@ export async function getReport(
   userId: string,
   reportId: string
 ): Promise<Report | null> {
-  const doc = await reportsCollection(userId).doc(reportId).get();
-  if (!doc.exists) return null;
-  return { id: doc.id, ...doc.data() } as Report;
+  const docSnap = await getDoc(doc(reportsCollection(userId), reportId));
+  if (!docSnap.exists) return null;
+  return { id: docSnap.id, ...docSnap.data() } as Report;
 }
 
 export async function deleteReport(
   userId: string,
   reportId: string
 ): Promise<void> {
-  await reportsCollection(userId).doc(reportId).delete();
+  await deleteDoc(doc(reportsCollection(userId), reportId));
 }
