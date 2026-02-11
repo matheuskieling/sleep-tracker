@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import type { Report } from "../../types/entry";
-import { toDisplayDate } from "../../utils/date";
+import { toDisplayDateSlash } from "../../utils/date";
 
 interface ReportCardProps {
   report: Report;
@@ -42,7 +42,7 @@ export function ReportCard({ report, onDelete }: ReportCardProps) {
     >
       <View className="flex-row items-center justify-between mb-2">
         <Text className="text-text text-sm font-semibold">
-          {toDisplayDate(report.startDate)} → {toDisplayDate(report.endDate)}
+          {toDisplayDateSlash(report.startDate)} → {toDisplayDateSlash(report.endDate)}
         </Text>
         <TouchableOpacity
           onPress={() => onDelete(report.id)}

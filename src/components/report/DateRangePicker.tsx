@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { daysAgo, toDisplayDate, parseDate, formatDate } from "../../utils/date";
+import { daysAgo, toDisplayDateSlash, parseDate, formatDate } from "../../utils/date";
 
 interface DateRangePickerProps {
   startDate: string; // internal YYYY-MM-DD
@@ -104,7 +104,7 @@ export function DateRangePicker({
             className="bg-surface-card border border-border rounded-card px-4 py-3"
           >
             <Text className="text-text text-sm">
-              {toDisplayDate(startDate)}
+              {toDisplayDateSlash(startDate)}
             </Text>
           </TouchableOpacity>
         </View>
@@ -119,7 +119,7 @@ export function DateRangePicker({
             className="bg-surface-card border border-border rounded-card px-4 py-3"
           >
             <Text className="text-text text-sm">
-              {toDisplayDate(endDate)}
+              {toDisplayDateSlash(endDate)}
             </Text>
           </TouchableOpacity>
         </View>

@@ -5,7 +5,7 @@ import { useAuth } from "../../src/hooks/useAuth";
 import { useReport } from "../../src/hooks/useReport";
 import { ReportView } from "../../src/components/report/ReportView";
 import { deleteReport } from "../../src/services/firestore";
-import { toDisplayDate } from "../../src/utils/date";
+import { toDisplayDateSlash } from "../../src/utils/date";
 
 export default function ReportDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -57,7 +57,7 @@ export default function ReportDetailScreen() {
       <ScrollView className="flex-1 bg-surface" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
         <View className="p-5">
           <Text className="text-text text-body font-semibold mb-1">
-            {toDisplayDate(report.startDate)} → {toDisplayDate(report.endDate)}
+            {toDisplayDateSlash(report.startDate)} → {toDisplayDateSlash(report.endDate)}
           </Text>
 
           {report.createdAt?.toDate && (
