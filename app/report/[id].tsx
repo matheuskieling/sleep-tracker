@@ -33,8 +33,8 @@ export default function ReportDetailScreen() {
     return (
       <>
         <Stack.Screen options={{ title: "Relatorio" }} />
-        <View className="flex-1 bg-base-900 items-center justify-center">
-          <ActivityIndicator size="large" color="#6366f1" />
+        <View className="flex-1 bg-surface items-center justify-center">
+          <ActivityIndicator size="large" color="#FF7617" />
         </View>
       </>
     );
@@ -44,8 +44,8 @@ export default function ReportDetailScreen() {
     return (
       <>
         <Stack.Screen options={{ title: "Relatorio" }} />
-        <View className="flex-1 bg-base-900 items-center justify-center">
-          <Text className="text-base-500 text-sm">Relatorio nao encontrado.</Text>
+        <View className="flex-1 bg-surface items-center justify-center">
+          <Text className="text-text-muted text-sm">Relatorio nao encontrado.</Text>
         </View>
       </>
     );
@@ -54,14 +54,14 @@ export default function ReportDetailScreen() {
   return (
     <>
       <Stack.Screen options={{ title: "Relatorio" }} />
-      <ScrollView className="flex-1 bg-base-900" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
+      <ScrollView className="flex-1 bg-surface" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
         <View className="p-5">
-          <Text className="text-base-100 text-base font-semibold mb-1">
+          <Text className="text-text text-body font-semibold mb-1">
             {toDisplayDate(report.startDate)} → {toDisplayDate(report.endDate)}
           </Text>
 
           {report.createdAt?.toDate && (
-            <Text className="text-base-500 text-xs mb-2">
+            <Text className="text-text-muted text-caption mb-2">
               Criado em {report.createdAt.toDate().toLocaleDateString("pt-BR")}
             </Text>
           )}
@@ -71,9 +71,9 @@ export default function ReportDetailScreen() {
           <TouchableOpacity
             onPress={handleDelete}
             activeOpacity={0.8}
-            className="rounded-xl p-4 items-center mt-6 bg-red-900/40 border border-red-800"
+            className="rounded-button p-4 items-center mt-6 bg-danger-light border border-danger"
           >
-            <Text className="text-red-300 font-semibold text-sm">
+            <Text className="text-danger-dark font-semibold text-sm">
               Excluir relatorio
             </Text>
           </TouchableOpacity>

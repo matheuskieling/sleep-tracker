@@ -17,20 +17,27 @@ export default function HistoryScreen() {
   );
 
   return (
-    <ScrollView className="flex-1 bg-base-900" contentContainerStyle={{ paddingBottom: 100 }}>
+    <ScrollView className="flex-1 bg-surface" contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
         <View className="flex-row gap-2 mb-4">
           {[7, 14, 30].map((days) => (
             <TouchableOpacity
               key={days}
               onPress={() => setRange(days)}
-              className={`flex-1 rounded-xl py-2 items-center ${
-                range === days ? "bg-accent-dark" : "bg-base-800"
+              className={`flex-1 rounded-button py-2.5 items-center ${
+                range === days ? "bg-accent" : "bg-surface-card"
               }`}
+              style={range !== days ? {
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.06,
+                shadowRadius: 8,
+                elevation: 2,
+              } : undefined}
             >
               <Text
                 className={`text-sm font-semibold ${
-                  range === days ? "text-white" : "text-base-400"
+                  range === days ? "text-text-inverse" : "text-text-muted"
                 }`}
               >
                 {days} dias
@@ -40,18 +47,27 @@ export default function HistoryScreen() {
         </View>
 
         {loading ? (
-          <ActivityIndicator color="#6366f1" size="large" className="mt-8" />
+          <ActivityIndicator color="#FF7617" size="large" className="mt-8" />
         ) : entries.length === 0 ? (
-          <View className="bg-base-800 rounded-2xl p-6 items-center mt-4">
-            <Text className="text-base-400 text-sm text-center mb-4">
+          <View
+            className="bg-surface-card rounded-card p-6 items-center mt-4"
+            style={{
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.06,
+              shadowRadius: 8,
+              elevation: 2,
+            }}
+          >
+            <Text className="text-text-muted text-body text-center mb-4">
               Nenhum registro encontrado neste periodo.
             </Text>
             <TouchableOpacity
               onPress={() => router.push("/(tabs)" as any)}
               activeOpacity={0.7}
-              className="bg-accent-dark rounded-xl px-6 py-3"
+              className="bg-primary rounded-button px-6 py-3"
             >
-              <Text className="text-white text-sm font-semibold">Preencher formulario</Text>
+              <Text className="text-text-inverse text-sm font-semibold">Preencher formulario</Text>
             </TouchableOpacity>
           </View>
         ) : (

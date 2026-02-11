@@ -17,9 +17,9 @@ import type { MorningEntry, NoonEntry, EveningEntry } from "../../src/types/entr
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <View className="flex-row justify-between items-center py-2 border-b border-base-700">
-      <Text className="text-base-400 text-sm flex-1">{label}</Text>
-      <Text className="text-base-100 text-sm font-semibold">{value}</Text>
+    <View className="flex-row justify-between items-center py-2 border-b border-border">
+      <Text className="text-text-muted text-sm flex-1">{label}</Text>
+      <Text className="text-text text-sm font-semibold">{value}</Text>
     </View>
   );
 }
@@ -28,14 +28,23 @@ function SectionHeader({ icon, title }: { icon: string; title: string }) {
   return (
     <View className="flex-row items-center gap-2 mb-3 mt-5">
       <Text className="text-lg">{icon}</Text>
-      <Text className="text-base-100 text-base font-bold">{title}</Text>
+      <Text className="text-text text-body font-bold">{title}</Text>
     </View>
   );
 }
 
 function MorningSection({ data }: { data: MorningEntry }) {
   return (
-    <View className="bg-base-800 rounded-2xl p-4">
+    <View
+      className="bg-surface-card rounded-card p-4"
+      style={{
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
+    >
       <InfoRow label="Horas de sono" value={`${data.hoursSlept}h`} />
       <InfoRow label="Qualidade do sono" value={SLEEP_QUALITY_LABELS[data.sleepQuality]} />
       <InfoRow label="Despertares noturnos" value={String(data.nightAwakenings)} />
@@ -43,8 +52,8 @@ function MorningSection({ data }: { data: MorningEntry }) {
       <InfoRow label="Sonolencia ao acordar" value={WAKE_SLEEPINESS_LABELS[data.wakeSleepiness]} />
       {data.observations ? (
         <View className="mt-3">
-          <Text className="text-base-400 text-sm mb-1">Observacoes</Text>
-          <Text className="text-base-100 text-sm">{data.observations}</Text>
+          <Text className="text-text-muted text-sm mb-1">Observacoes</Text>
+          <Text className="text-text text-sm">{data.observations}</Text>
         </View>
       ) : null}
     </View>
@@ -53,7 +62,16 @@ function MorningSection({ data }: { data: MorningEntry }) {
 
 function NoonSection({ data }: { data: NoonEntry }) {
   return (
-    <View className="bg-base-800 rounded-2xl p-4">
+    <View
+      className="bg-surface-card rounded-card p-4"
+      style={{
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
+    >
       <InfoRow label="Sonolencia pela manha" value={SLEEPINESS_LEVEL_LABELS[data.morningSleepiness]} />
       {data.sleepinessTime ? (
         <InfoRow label="Horario da sonolencia" value={data.sleepinessTime} />
@@ -69,8 +87,8 @@ function NoonSection({ data }: { data: NoonEntry }) {
       <InfoRow label="Ansiedade" value={ANXIETY_LEVEL_LABELS[data.anxiety]} />
       {data.observations ? (
         <View className="mt-3">
-          <Text className="text-base-400 text-sm mb-1">Observacoes</Text>
-          <Text className="text-base-100 text-sm">{data.observations}</Text>
+          <Text className="text-text-muted text-sm mb-1">Observacoes</Text>
+          <Text className="text-text text-sm">{data.observations}</Text>
         </View>
       ) : null}
     </View>
@@ -79,7 +97,16 @@ function NoonSection({ data }: { data: NoonEntry }) {
 
 function EveningSection({ data }: { data: EveningEntry }) {
   return (
-    <View className="bg-base-800 rounded-2xl p-4">
+    <View
+      className="bg-surface-card rounded-card p-4"
+      style={{
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
+    >
       <InfoRow label="Sonolencia a tarde" value={SLEEPINESS_LEVEL_LABELS[data.afternoonSleepiness]} />
       {data.sleepinessTime ? (
         <InfoRow label="Horario da sonolencia" value={data.sleepinessTime} />
@@ -94,8 +121,8 @@ function EveningSection({ data }: { data: EveningEntry }) {
       <InfoRow label="Ansiedade" value={ANXIETY_LEVEL_LABELS[data.anxiety]} />
       {data.observations ? (
         <View className="mt-3">
-          <Text className="text-base-400 text-sm mb-1">Observacoes</Text>
-          <Text className="text-base-100 text-sm">{data.observations}</Text>
+          <Text className="text-text-muted text-sm mb-1">Observacoes</Text>
+          <Text className="text-text text-sm">{data.observations}</Text>
         </View>
       ) : null}
     </View>
@@ -104,8 +131,8 @@ function EveningSection({ data }: { data: EveningEntry }) {
 
 function EmptySection({ title }: { title: string }) {
   return (
-    <View className="bg-base-800/50 rounded-2xl p-4 items-center">
-      <Text className="text-base-500/60 text-sm">{title} nao preenchido</Text>
+    <View className="bg-surface-input rounded-card p-4 items-center">
+      <Text className="text-text-muted text-sm">{title} nao preenchido</Text>
     </View>
   );
 }
@@ -121,8 +148,8 @@ export default function EntryDetailScreen() {
     return (
       <>
         <Stack.Screen options={{ title: displayDate || "Detalhes" }} />
-        <View className="flex-1 bg-base-900 items-center justify-center">
-          <ActivityIndicator size="large" color="#6366f1" />
+        <View className="flex-1 bg-surface items-center justify-center">
+          <ActivityIndicator size="large" color="#FF7617" />
         </View>
       </>
     );
@@ -132,8 +159,8 @@ export default function EntryDetailScreen() {
     return (
       <>
         <Stack.Screen options={{ title: displayDate || "Detalhes" }} />
-        <View className="flex-1 bg-base-900 items-center justify-center">
-          <Text className="text-base-500 text-sm">Registro nao encontrado.</Text>
+        <View className="flex-1 bg-surface items-center justify-center">
+          <Text className="text-text-muted text-sm">Registro nao encontrado.</Text>
         </View>
       </>
     );
@@ -143,7 +170,7 @@ export default function EntryDetailScreen() {
     <>
       <Stack.Screen options={{ title: displayDate }} />
       <ScrollView
-        className="flex-1 bg-base-900"
+        className="flex-1 bg-surface"
         contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
       >
         <View className="p-5">

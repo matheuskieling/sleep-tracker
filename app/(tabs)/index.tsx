@@ -1,13 +1,16 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import Constants from "expo-constants";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useTodayStatus, useEntryRange } from "../../src/hooks/useEntry";
-import { DailyProgress } from "../../src/components/dashboard/DailyProgress";
+import { WeekSelector } from "../../src/components/dashboard/WeekSelector";
+import { ChecklistCard } from "../../src/components/dashboard/ChecklistCard";
 import { QuickStats } from "../../src/components/dashboard/QuickStats";
 import { signOut } from "../../src/services/auth";
-import { daysAgo } from "../../src/utils/date";
+import { daysAgo, getTodayString, formatDate } from "../../src/utils/date";
+import { FORM_CARD_TITLES } from "../../src/config/constants";
 import type { FormType } from "../../src/types/entry";
 
 function getGreeting(): string {
@@ -17,9 +20,32 @@ function getGreeting(): string {
   return "Boa noite";
 }
 
+function getFormattedDate(): string {
+  const days = ["Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"];
+  const months = ["Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  const d = new Date();
+  return `${days[d.getDay()]}, ${d.getDate()} de ${months[d.getMonth()]}`;
+}
+
+function computeStreak(entries: any[]): number {
+  const sorted = [...entries].sort((a, b) =>
+    b.dateString.localeCompare(a.dateString)
+  );
+  let streak = 0;
+  for (const entry of sorted) {
+    const hasData = !!entry.morning || !!entry.noon || !!entry.evening;
+    if (hasData) streak++;
+    else break;
+  }
+  return streak;
+}
+
+const FORM_TYPES: FormType[] = ["morning", "noon", "evening"];
+
 export default function DashboardScreen() {
   const { user, userName } = useAuth();
   const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState(getTodayString());
   const { status, loading: statusLoading, refresh: refreshStatus } = useTodayStatus();
   const { entries, loading: entriesLoading, refresh: refreshEntries } = useEntryRange(daysAgo(7), daysAgo(0));
 
@@ -45,41 +71,81 @@ export default function DashboardScreen() {
     ]);
   }
 
+  const streak = entriesLoading ? 0 : computeStreak(entries);
+  const firstName = userName?.split(" ")[0] || "usuario";
+
   return (
-    <ScrollView className="flex-1 bg-base-900" style={{ paddingTop: Constants.statusBarHeight }} contentContainerStyle={{ paddingBottom: 100 }}>
+    <ScrollView
+      className="flex-1 bg-surface"
+      style={{ paddingTop: Constants.statusBarHeight + 24 }}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       <View className="p-5">
-        <View className="flex-row justify-between items-center mb-8">
-          <View>
-            <Text className="text-2xl font-bold text-base-100">
-              {getGreeting()}, {userName || "usuario"}!
+        {/* Greeting Header */}
+        <View className="flex-row justify-between items-start mb-6">
+          <View className="flex-1">
+            <Text className="text-heading-xl text-text">
+              {getGreeting()}, {firstName}!
+            </Text>
+            <Text className="text-body text-text-muted mt-1">
+              {getFormattedDate()}
             </Text>
           </View>
           <TouchableOpacity
             onPress={handleLogout}
-            className="bg-base-800 rounded-xl px-4 py-2"
+            className="w-11 h-11 rounded-full bg-surface-card items-center justify-center"
+            style={{
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.06,
+              shadowRadius: 8,
+              elevation: 2,
+            }}
           >
-            <Text className="text-base-400 text-sm">Sair</Text>
+            <Ionicons name="log-out-outline" size={20} color="#652D07" />
           </TouchableOpacity>
         </View>
 
-        <Text className="text-base-300 font-semibold text-base mb-3">
-          Formularios de Hoje
-        </Text>
-
-        {statusLoading ? (
-          <ActivityIndicator color="#6366f1" className="my-4" />
-        ) : (
-          <DailyProgress status={status} onFormPress={handleFormPress} />
-        )}
-
-        <Text className="text-base-300 font-semibold text-base mt-6 mb-3">
+        {/* Stats Section */}
+        <Text className="text-heading-m text-text mb-3">
           Ultimos 7 dias
         </Text>
 
         {entriesLoading ? (
-          <ActivityIndicator color="#6366f1" className="my-4" />
+          <ActivityIndicator color="#FF7617" className="my-4" />
         ) : (
           <QuickStats entries={entries} />
+        )}
+
+        {/* Week Day Selector */}
+        <View className="mt-6">
+          <WeekSelector
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+          />
+        </View>
+
+        {/* Checklist Section */}
+        <View className="flex-row items-center justify-between mb-4">
+          <Text className="text-heading-m text-text">Registro do dia</Text>
+        </View>
+
+        {statusLoading ? (
+          <ActivityIndicator color="#FF7617" className="my-6" />
+        ) : (
+          <View>
+            {FORM_TYPES.map((type, index) => (
+              <ChecklistCard
+                key={type}
+                type={type}
+                title={FORM_CARD_TITLES[type]}
+                completed={status[type]}
+                streak={streak}
+                isLast={index === FORM_TYPES.length - 1}
+                onPress={() => handleFormPress(type)}
+              />
+            ))}
+          </View>
         )}
       </View>
     </ScrollView>

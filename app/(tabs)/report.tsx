@@ -90,9 +90,9 @@ export default function ReportScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-base-900" contentContainerStyle={{ paddingBottom: 100 }}>
+    <ScrollView className="flex-1 bg-surface" contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
-        <Text className="text-base-300 text-sm mb-4">
+        <Text className="text-text-muted text-body mb-4">
           Selecione um periodo para gerar uma analise com IA dos seus dados de sono e habitos.
         </Text>
 
@@ -107,19 +107,19 @@ export default function ReportScreen() {
           onPress={handleGenerate}
           disabled={generating || copyingPrompt}
           activeOpacity={0.8}
-          className={`rounded-xl p-4 items-center mt-4 ${
-            generating ? "bg-accent-dark opacity-70" : "bg-accent-dark"
+          className={`rounded-button p-4 items-center mt-4 ${
+            generating ? "bg-primary opacity-70" : "bg-accent"
           }`}
         >
           {generating ? (
             <View className="flex-row items-center">
-              <ActivityIndicator color="#f1f5f9" />
-              <Text className="text-white font-semibold text-base ml-2">
+              <ActivityIndicator color="#FFFFFF" />
+              <Text className="text-text-inverse font-semibold text-body ml-2">
                 Analisando...
               </Text>
             </View>
           ) : (
-            <Text className="text-white font-semibold text-base">
+            <Text className="text-text-inverse font-semibold text-body">
               Gerar Relatorio IA
             </Text>
           )}
@@ -129,20 +129,20 @@ export default function ReportScreen() {
           onPress={handleCopyPrompt}
           disabled={generating || copyingPrompt}
           activeOpacity={0.8}
-          className={`rounded-xl p-4 items-center mt-3 border ${
-            promptCopied ? "border-green-500 bg-green-600/20" : "border-base-700 bg-accent-subtle"
+          className={`rounded-button p-4 items-center mt-3 border ${
+            promptCopied ? "border-success bg-success-light" : "border-border bg-surface-card"
           }`}
         >
           {copyingPrompt ? (
             <View className="flex-row items-center">
-              <ActivityIndicator color="#94a3b8" />
-              <Text className="text-base-400 font-semibold text-base ml-2">
+              <ActivityIndicator color="#A09389" />
+              <Text className="text-text-muted font-semibold text-body ml-2">
                 Copiando...
               </Text>
             </View>
           ) : (
-            <Text className={`font-semibold text-base ${
-              promptCopied ? "text-green-400" : "text-base-400"
+            <Text className={`font-semibold text-body ${
+              promptCopied ? "text-success-dark" : "text-text-secondary"
             }`}>
               {promptCopied ? "Prompt copiado!" : "Copiar Prompt"}
             </Text>
@@ -155,23 +155,23 @@ export default function ReportScreen() {
             <TouchableOpacity
               onPress={() => setReport("")}
               activeOpacity={0.8}
-              className="rounded-xl p-3 items-center mt-3 border border-base-700"
+              className="rounded-button p-3 items-center mt-3 border border-border"
             >
-              <Text className="text-base-400 font-semibold text-sm">
+              <Text className="text-text-muted font-semibold text-sm">
                 Ocultar relatorio
               </Text>
             </TouchableOpacity>
           </>
         )}
 
-        <Text className="text-base-300 font-semibold text-base mt-8 mb-4">
+        <Text className="text-text font-semibold text-heading-m mt-8 mb-4">
           Relatorios salvos
         </Text>
 
         {reportsLoading ? (
-          <ActivityIndicator color="#6366f1" className="my-4" />
+          <ActivityIndicator color="#FF7617" className="my-4" />
         ) : reports.length === 0 ? (
-          <Text className="text-base-500 text-sm text-center py-8">
+          <Text className="text-text-muted text-body text-center py-8">
             Nenhum relatorio salvo ainda.
           </Text>
         ) : (

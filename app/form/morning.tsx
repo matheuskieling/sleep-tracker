@@ -24,18 +24,18 @@ export default function MorningFormScreen() {
   };
 
   return (
-    <View className="flex-1 bg-base-900">
+    <View className="flex-1 bg-surface">
       <Stack.Screen
         options={{
           title: "Formulario da Manha",
-          headerStyle: { backgroundColor: "#0f172a" },
-          headerTintColor: "#f1f5f9",
+          headerStyle: { backgroundColor: "#F8F2EF" },
+          headerTintColor: "#292D32",
           headerShadowVisible: false,
         }}
       />
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#6366f1" />
+          <ActivityIndicator size="large" color="#FF7617" />
         </View>
       ) : (
         <MorningForm onSubmit={handleSubmit} initialData={entry?.morning} />
