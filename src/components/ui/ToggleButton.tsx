@@ -9,8 +9,8 @@ interface ToggleButtonProps {
 
 export function ToggleButton({ value, onChange, label }: ToggleButtonProps) {
   return (
-    <View className="mb-4">
-      <Text className="text-base-100 text-base font-semibold mb-2">
+    <View className="mb-5">
+      <Text className="text-text text-body font-bold mb-3">
         {label}
       </Text>
       <View className="flex-row gap-2">
@@ -19,15 +19,15 @@ export function ToggleButton({ value, onChange, label }: ToggleButtonProps) {
           activeOpacity={0.7}
           accessibilityRole="button"
           accessibilityState={{ selected: value }}
-          className={`flex-1 py-3 rounded-xl border items-center ${
+          className={`flex-1 py-3 rounded-full border items-center ${
             value
-              ? "bg-emerald-600 border-emerald-500"
-              : "bg-base-800 border-base-700"
+              ? "bg-accent border-accent"
+              : "bg-surface-card border-border"
           }`}
         >
           <Text
             className={`text-sm font-medium ${
-              value ? "text-white" : "text-base-400"
+              value ? "text-text-inverse" : "text-text-muted"
             }`}
           >
             Sim
@@ -38,15 +38,15 @@ export function ToggleButton({ value, onChange, label }: ToggleButtonProps) {
           activeOpacity={0.7}
           accessibilityRole="button"
           accessibilityState={{ selected: !value }}
-          className={`flex-1 py-3 rounded-xl border items-center ${
+          className={`flex-1 py-3 rounded-full border items-center ${
             !value
-              ? "bg-red-500/20 border-red-500"
-              : "bg-base-800 border-base-700"
+              ? "bg-surface-input border-border"
+              : "bg-surface-card border-border"
           }`}
         >
           <Text
             className={`text-sm font-medium ${
-              !value ? "text-red-400" : "text-base-400"
+              !value ? "text-text-secondary" : "text-text-muted"
             }`}
           >
             Nao

@@ -7,6 +7,17 @@ interface FormCardProps {
 
 export function FormCard({ children }: FormCardProps) {
   return (
-    <View className="bg-base-800 border border-base-700 rounded-2xl p-4 mb-4">{children}</View>
+    <View
+      className="bg-surface-card rounded-card p-5 mb-5"
+      style={{
+        shadowColor: "#6B5E57",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        elevation: 2,
+      }}
+    >
+      {children}
+    </View>
   );
 }

@@ -15,11 +15,11 @@ interface RadioGroupProps {
 
 export function RadioGroup({ options, value, onChange, label }: RadioGroupProps) {
   return (
-    <View className="mb-4">
-      <Text className="text-base-100 text-base font-semibold mb-2">
+    <View className="mb-5">
+      <Text className="text-text text-body font-bold mb-3">
         {label}
       </Text>
-      <View className="flex-row flex-wrap gap-2">
+      <View className="flex-row flex-wrap gap-2.5">
         {options.map((option) => {
           const isSelected = option.value === value;
           return (
@@ -29,15 +29,15 @@ export function RadioGroup({ options, value, onChange, label }: RadioGroupProps)
               activeOpacity={0.7}
               accessibilityRole="radio"
               accessibilityState={{ selected: isSelected }}
-              className={`px-4 py-3 rounded-xl border ${
+              className={`px-5 py-3.5 rounded-full ${
                 isSelected
-                  ? "bg-accent border-accent-light"
-                  : "bg-base-800 border-base-700"
+                  ? "bg-accent"
+                  : "bg-surface-card border border-border"
               }`}
             >
               <Text
                 className={`text-sm font-medium ${
-                  isSelected ? "text-white" : "text-base-400"
+                  isSelected ? "text-text-inverse" : "text-text-secondary"
                 }`}
               >
                 {option.label}

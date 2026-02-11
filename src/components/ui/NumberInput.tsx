@@ -38,8 +38,8 @@ export function NumberInput({
   const isAtMax = value >= max;
 
   return (
-    <View className="mb-4">
-      <Text className="text-base-100 text-base font-semibold mb-2">
+    <View className="mb-5">
+      <Text className="text-text text-body font-bold mb-3">
         {label}
       </Text>
       <View className="flex-row items-center gap-3">
@@ -48,22 +48,29 @@ export function NumberInput({
           disabled={isAtMin}
           activeOpacity={0.7}
           accessibilityRole="adjustable"
-          className={`w-12 h-12 rounded-xl border items-center justify-center ${
+          className={`w-12 h-12 rounded-full border items-center justify-center ${
             isAtMin
-              ? "bg-base-900 border-base-700 opacity-40"
-              : "bg-base-800 border-base-700"
+              ? "bg-surface-input border-border opacity-40"
+              : "bg-surface-card border-border"
           }`}
+          style={!isAtMin ? {
+            shadowColor: "#6B5E57",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.04,
+            shadowRadius: 4,
+            elevation: 1,
+          } : undefined}
         >
           <Text
             className={`text-xl font-bold ${
-              isAtMin ? "text-base-400" : "text-base-100"
+              isAtMin ? "text-text-muted" : "text-accent"
             }`}
           >
             -
           </Text>
         </TouchableOpacity>
         <View className="min-w-[48px] items-center">
-          <Text className="text-base-100 text-2xl font-bold">
+          <Text className="text-text text-2xl font-bold">
             {value}{unit ? unit : ""}
           </Text>
         </View>
@@ -72,15 +79,22 @@ export function NumberInput({
           disabled={isAtMax}
           activeOpacity={0.7}
           accessibilityRole="adjustable"
-          className={`w-12 h-12 rounded-xl border items-center justify-center ${
+          className={`w-12 h-12 rounded-full border items-center justify-center ${
             isAtMax
-              ? "bg-base-900 border-base-700 opacity-40"
-              : "bg-base-800 border-base-700"
+              ? "bg-surface-input border-border opacity-40"
+              : "bg-surface-card border-border"
           }`}
+          style={!isAtMax ? {
+            shadowColor: "#6B5E57",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.04,
+            shadowRadius: 4,
+            elevation: 1,
+          } : undefined}
         >
           <Text
             className={`text-xl font-bold ${
-              isAtMax ? "text-base-400" : "text-base-100"
+              isAtMax ? "text-text-muted" : "text-accent"
             }`}
           >
             +
