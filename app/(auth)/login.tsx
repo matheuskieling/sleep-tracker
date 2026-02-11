@@ -50,29 +50,29 @@ export default function LoginScreen() {
   }
 
   return (
-    <View className="flex-1 bg-base-900">
+    <View className="flex-1 bg-surface">
       <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom + 20 }}>
           <View className="flex-1 justify-center px-8">
-            <Text className="text-4xl font-bold text-base-100 text-center mb-2">
+            <Text className="text-heading-xl text-text text-center mb-2">
               Sleep Tracker
             </Text>
-            <Text className="text-base-400 text-center mb-10 text-base">
+            <Text className="text-text-muted text-center mb-10 text-body">
               Acompanhe a qualidade do seu sono
             </Text>
 
             {error !== "" && (
-              <View className="bg-red-900/50 border border-red-500 rounded-xl p-4 mb-4">
-                <Text className="text-red-300 text-center text-sm">
+              <View className="bg-danger-light border border-danger rounded-card p-4 mb-4">
+                <Text className="text-danger-dark text-center text-sm">
                   {error}
                 </Text>
               </View>
             )}
 
-            <Text className="text-base-300 text-sm mb-2 ml-1">Email</Text>
+            <Text className="text-text-secondary text-sm mb-2 ml-1">Email</Text>
             <TextInput
-              className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4 mb-4"
+              className="bg-surface-card border border-border text-text rounded-card p-4 mb-4"
               placeholder="seu@email.com"
-              placeholderTextColor="#64748b"
+              placeholderTextColor="#A09389"
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -82,12 +82,12 @@ export default function LoginScreen() {
               onSubmitEditing={() => passwordRef.current?.focus()}
             />
 
-            <Text className="text-base-300 text-sm mb-2 ml-1">Senha</Text>
+            <Text className="text-text-secondary text-sm mb-2 ml-1">Senha</Text>
             <TextInput
               ref={passwordRef}
-              className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4 mb-6"
+              className="bg-surface-card border border-border text-text rounded-card p-4 mb-6"
               placeholder="Sua senha"
-              placeholderTextColor="#64748b"
+              placeholderTextColor="#A09389"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -97,15 +97,15 @@ export default function LoginScreen() {
             />
 
             <TouchableOpacity
-              className="bg-accent-dark rounded-xl p-4 items-center mb-4"
+              className="bg-accent rounded-button p-4 items-center mb-4"
               onPress={handleSignIn}
               disabled={loading}
               activeOpacity={0.8}
             >
               {loading ? (
-                <ActivityIndicator color="#f1f5f9" />
+                <ActivityIndicator color="#FFFFFF" />
               ) : (
-                <Text className="text-white font-semibold text-base">
+                <Text className="text-text-inverse font-semibold text-body">
                   Entrar
                 </Text>
               )}
@@ -113,18 +113,18 @@ export default function LoginScreen() {
 
             <Link
               href="/(auth)/forgot-password"
-              style={{ color: "#6366f1", textAlign: "center", fontSize: 14, marginBottom: 24 }}
+              style={{ color: "#652D07", textAlign: "center", fontSize: 14, marginBottom: 24 }}
             >
               Esqueceu sua senha?
             </Link>
 
             <View className="flex-row justify-center items-center">
-              <Text className="text-base-400 text-sm">
+              <Text className="text-text-muted text-sm">
                 Nao tem uma conta?{" "}
               </Text>
               <Link
                 href="/(auth)/register"
-                style={{ color: "#6366f1", fontWeight: "600", fontSize: 14 }}
+                style={{ color: "#652D07", fontWeight: "600", fontSize: 14 }}
               >
                 Criar conta
               </Link>
