@@ -28,7 +28,7 @@ Personal sleep and habit tracking app built with Expo + React Native + Firebase.
 - `src/hooks/` - Custom hooks (useAuth, useEntry)
 - `src/components/ui/` - Reusable UI components (RadioGroup, ToggleButton, etc.)
 - `src/components/forms/` - Form components (Morning, Noon, Evening)
-- `src/components/dashboard/` - Dashboard widgets (DailyProgress, QuickStats)
+- `src/components/dashboard/` - Dashboard widgets (WeekSelector, ChecklistCard, QuickStats, DailyProgress)
 - `src/components/history/` - History components (EntryCard)
 - `src/components/report/` - AI report components (ReportView, DateRangePicker)
 - `src/utils/` - Date utils, form labels (PT-BR mappings)
@@ -83,21 +83,60 @@ Instead, use plain `<View>` with appropriate padding, or rely on Expo Router's `
 
 ## Style Guidelines
 
-- Use NativeWind `className` on all React Native components (`View`, `Text`, `TextInput`, `TouchableOpacity`, `ScrollView`, etc.)
-- Color palette: slate neutral (`base`) + indigo accent (`accent`) dark theme
-- Backgrounds: `bg-base-900` (#0f172a) for screens, `bg-base-800` (#1e293b) for cards/inputs
-- Text colors: `text-base-100` (#f1f5f9, primary), `text-base-300` (#cbd5e1, labels), `text-base-400` (#94a3b8, muted), `text-base-500` (#64748b, subtle)
-- Accent: `bg-accent-dark` (#4f46e5) for buttons, `bg-accent-subtle` (rgba(99,102,241,0.2)) for selected states
-- Borders: `border-base-700` (#334155, default/inputs), `border-accent` (#6366f1, active)
-- Semantic colors: emerald for "Sim"/success, red for "Nao"/danger, amber/sky/violet for morning/noon/evening forms
-- Placeholder color: `#64748b` (base-500) for all TextInputs
-- Headers: `backgroundColor: "#0f172a"`, `headerTintColor: "#f1f5f9"`, `headerShadowVisible: false`
-- Tab bar: bg `#0f172a`, borderTop `#334155`, active `#6366f1`, inactive `#64748b`
-- Touch targets: minimum `py-3` for interactive elements (RadioGroup, ToggleButton)
-- Border radius: `rounded-xl` for inputs/buttons, `rounded-2xl` for cards
-- Spacing: `p-5` for screen padding, `mb-4` between elements, `gap-3` for grid layouts
-- `Link` components from expo-router use inline `style={{}}` with `color: "#6366f1"` for text styles
-- Accessibility: `accessibilityRole` and `accessibilityState` on interactive components
+Warm, earthy wellness theme — friendly, calm, minimal design with a beige/brown/orange palette.
+
+### Color Palette (defined in `src/config/colors.js`, imported by `tailwind.config.js`)
+
+- **Surfaces**: `bg-surface` (#F8F2EF, warm beige background), `bg-surface-card` (#FFFFFF, cards), `bg-surface-input` (#F3EDE9, inputs/disabled), `bg-surface-hover` (#EDE5E0, pressed states)
+- **Primary**: `bg-primary` (#292D32, dark) for active day selection, `text-primary` for primary text
+- **Secondary**: `bg-secondary` (#652D07, deep brown) for section headers and accents, `text-secondary` for links
+- **Accent**: `bg-accent` (#FF7617, orange) for CTA buttons, active pills, completion markers, `text-accent` for highlights
+- **Text**: `text-text` (#292D32, primary), `text-text-secondary` (#6B5E57), `text-text-muted` (#A09389, subtext), `text-text-inverse` (#FFFFFF, on dark bg)
+- **Success**: `bg-success` (#ADCC39, green), `bg-success-light` (#F2F8E1), `text-success-dark` (#8AAD1E)
+- **Danger**: `bg-danger` (#E53935), `bg-danger-light` (#FFEBEE), `text-danger-dark` (#C62828)
+- **Pastel icon backgrounds**: `bg-pastel-amber` (#FFF3E0), `bg-pastel-green` (#F2F8E1), `bg-pastel-brown` (#F5EBE0), `bg-pastel-orange` (#FFF0E5), `bg-pastel-pink` (#FCE4EC)
+- **Borders**: `border-border` (#E8DDD6)
+
+### Typography Scale
+
+- Heading XL: `text-heading-xl` (32px, bold) — greeting, titles
+- Heading M: `text-heading-m` (20px, semibold) — section headers
+- Body: `text-body` (16px) — regular text
+- Caption: `text-caption` (12px) — small labels, badges
+
+### Component Patterns
+
+- Use NativeWind `className` on all React Native components
+- Cards: `bg-surface-card rounded-card` borderless, with warm shadow (`shadowColor: "#6B5E57"`, `shadowOpacity: 0.08, shadowRadius: 12, elevation: 2`)
+- Submit buttons: `bg-accent rounded-full` (pill) with `text-text-inverse`, orange shadow
+- Radio groups: pill-shaped (`rounded-full`), selected = `bg-accent`, unselected = `bg-surface-card border border-border`
+- Toggle buttons: pill-shaped (`rounded-full`), "Sim" selected = `bg-accent`, "Nao" selected = `bg-surface-input`
+- Inputs: `bg-surface-card border border-border rounded-full` with `placeholderTextColor="#A09389"`
+- Section headers: `text-secondary` (deep brown #652D07), no divider line
+- Icons: Use `@expo/vector-icons` Ionicons in warm pastel-bg rounded squares (36-44px), brown/orange/dark colors
+- Touch targets: minimum `py-3` for interactive elements
+- Border radius: `rounded-card` (16px) for cards, `rounded-button` (14px) for buttons, `rounded-full` for pills/toggles/radio
+- Spacing: `p-5` for screen padding, `mb-5` between form elements, `gap-3` for grid layouts
+
+### Navigation
+
+- Headers: `backgroundColor: "#F8F2EF"`, `headerTintColor: "#292D32"`, `headerShadowVisible: false`
+- Tab bar: bg `#FFFFFF`, borderTop `#E8DDD6`, active `#652D07`, inactive `#A09389`
+- StatusBar: `style="dark"`
+- `Link` components from expo-router use inline `style={{}}` with `color: "#652D07"`
+- ActivityIndicator color: `"#FF7617"` (orange)
+
+### Dashboard
+
+- Greeting header with formatted date (e.g., "Quinta, 11 de Fevereiro")
+- Horizontal `WeekSelector` component showing Mon-Sun with date numbers, active day = `bg-primary` (#292D32) with white text
+- Vertical checklist cards with timeline: `ChecklistCard` component
+- Card titles: "Como foi sua noite?", "Como foi sua manha?", "Como foi sua tarde?"
+- Timeline with dotted line (#E8DDD6), orange filled circle (complete) or gray outline (pending)
+
+### Accessibility
+
+- `accessibilityRole` and `accessibilityState` on interactive components
 
 ## Commands
 
