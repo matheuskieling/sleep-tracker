@@ -41,7 +41,6 @@ export function DateRangePicker({
     const formatted = formatDate(selectedDate);
 
     if (showPicker === "start") {
-      // Ensure start <= end
       if (formatted <= endDate) {
         onStartChange(formatted);
       } else {
@@ -49,7 +48,6 @@ export function DateRangePicker({
         onEndChange(formatted);
       }
     } else if (showPicker === "end") {
-      // Ensure end >= start and end <= today
       const todayStr = formatDate(today);
       if (formatted >= startDate && formatted <= todayStr) {
         onEndChange(formatted);
@@ -76,15 +74,15 @@ export function DateRangePicker({
               key={preset.days}
               onPress={() => handlePreset(preset.days)}
               activeOpacity={0.7}
-              className={`flex-1 py-2.5 rounded-xl items-center border ${
+              className={`flex-1 py-2.5 rounded-button items-center border ${
                 isActive
-                  ? "bg-accent-dark border-accent"
-                  : "bg-base-800 border-base-700"
+                  ? "bg-accent border-accent"
+                  : "bg-surface-card border-border"
               }`}
             >
               <Text
                 className={`text-sm font-semibold ${
-                  isActive ? "text-white" : "text-base-400"
+                  isActive ? "text-text-inverse" : "text-text-muted"
                 }`}
               >
                 {preset.label}
@@ -97,30 +95,30 @@ export function DateRangePicker({
       {/* Date buttons */}
       <View className="flex-row gap-3">
         <View className="flex-1">
-          <Text className="text-base-100 text-sm font-semibold mb-2">
+          <Text className="text-text text-sm font-semibold mb-2">
             Data Inicio
           </Text>
           <TouchableOpacity
             onPress={() => setShowPicker("start")}
             activeOpacity={0.7}
-            className="bg-base-800 border border-base-700 rounded-xl px-4 py-3"
+            className="bg-surface-card border border-border rounded-card px-4 py-3"
           >
-            <Text className="text-base-100 text-sm">
+            <Text className="text-text text-sm">
               {toDisplayDate(startDate)}
             </Text>
           </TouchableOpacity>
         </View>
 
         <View className="flex-1">
-          <Text className="text-base-100 text-sm font-semibold mb-2">
+          <Text className="text-text text-sm font-semibold mb-2">
             Data Fim
           </Text>
           <TouchableOpacity
             onPress={() => setShowPicker("end")}
             activeOpacity={0.7}
-            className="bg-base-800 border border-base-700 rounded-xl px-4 py-3"
+            className="bg-surface-card border border-border rounded-card px-4 py-3"
           >
-            <Text className="text-base-100 text-sm">
+            <Text className="text-text text-sm">
               {toDisplayDate(endDate)}
             </Text>
           </TouchableOpacity>
@@ -142,9 +140,9 @@ export function DateRangePicker({
             <TouchableOpacity
               onPress={() => setShowPicker(null)}
               activeOpacity={0.7}
-              className="bg-accent-dark rounded-xl py-2.5 items-center mt-2"
+              className="bg-accent rounded-button py-2.5 items-center mt-2"
             >
-              <Text className="text-white text-sm font-semibold">OK</Text>
+              <Text className="text-text-inverse text-sm font-semibold">OK</Text>
             </TouchableOpacity>
           )}
         </View>

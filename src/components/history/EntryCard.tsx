@@ -1,38 +1,41 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 import type { DayEntry } from "../../types/entry";
-import { formatDateDisplay } from "../../utils/date";
+import { getWeekdayName, formatDateExtended } from "../../utils/date";
 import { SLEEP_QUALITY_LABELS } from "../../utils/form-labels";
-import { FORM_ICONS } from "../../config/constants";
+import type { FormType } from "../../types/entry";
 
 interface EntryCardProps {
   entry: DayEntry;
 }
 
-interface FormIndicatorProps {
-  icon: string;
-  filled: boolean;
-  type: "morning" | "noon" | "evening";
-}
-
-const INDICATOR_COLORS = {
-  morning: "bg-amber-500/30",
-  noon: "bg-sky-500/30",
-  evening: "bg-violet-500/30",
+const INDICATOR_CONFIG: Record<FormType, { icon: string; color: string; bg: string }> = {
+  morning: { icon: "moon-outline", color: "#652D07", bg: "bg-pastel-brown" },
+  noon: { icon: "sunny-outline", color: "#FF7617", bg: "bg-pastel-orange" },
+  evening: { icon: "partly-sunny-outline", color: "#D46010", bg: "bg-pastel-amber" },
 };
 
-function FormIndicator({ icon, filled, type }: FormIndicatorProps) {
+interface FormIndicatorProps {
+  filled: boolean;
+  type: FormType;
+}
+
+function FormIndicator({ filled, type }: FormIndicatorProps) {
+  const config = INDICATOR_CONFIG[type];
   return (
     <View
       className={`w-9 h-9 rounded-full items-center justify-center ${
-        filled ? INDICATOR_COLORS[type] : "bg-base-700"
+        filled ? config.bg : "bg-surface-input"
       }`}
     >
-      <Text className={`text-base ${filled ? "opacity-100" : "opacity-30"}`}>
-        {icon}
-      </Text>
+      <Ionicons
+        name={config.icon as any}
+        size={16}
+        color={filled ? config.color : "#A09389"}
+      />
     </View>
   );
 }
@@ -47,18 +50,30 @@ export function EntryCard({ entry }: EntryCardProps) {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => router.push(`/history/${entry.dateString}`)}
-      className="bg-base-800 rounded-2xl p-4 mb-3"
+      className="bg-surface-card rounded-card p-4 mb-3"
+      style={{
+        shadowColor: "#6B5E57",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
     >
       {/* Header row: date + form indicators */}
       <View className="flex-row items-center justify-between mb-2">
-        <Text className="text-base-100 text-sm font-semibold flex-1" numberOfLines={1}>
-          {formatDateDisplay(entry.dateString)}
-        </Text>
+        <View className="flex-1">
+          <Text className="text-text text-sm font-bold" numberOfLines={1}>
+            {getWeekdayName(entry.dateString)}
+          </Text>
+          <Text className="text-text-muted text-caption mt-0.5" numberOfLines={1}>
+            {formatDateExtended(entry.dateString)}
+          </Text>
+        </View>
 
         <View className="flex-row gap-2">
-          <FormIndicator icon={FORM_ICONS.morning} filled={hasMorning} type="morning" />
-          <FormIndicator icon={FORM_ICONS.noon} filled={hasNoon} type="noon" />
-          <FormIndicator icon={FORM_ICONS.evening} filled={hasEvening} type="evening" />
+          <FormIndicator filled={hasMorning} type="morning" />
+          <FormIndicator filled={hasNoon} type="noon" />
+          <FormIndicator filled={hasEvening} type="evening" />
         </View>
       </View>
 
@@ -66,15 +81,15 @@ export function EntryCard({ entry }: EntryCardProps) {
       {hasMorning && (
         <View className="flex-row items-center gap-3 mt-1">
           <View className="flex-row items-center gap-1">
-            <Text className="text-base-500 text-xs">Sono:</Text>
-            <Text className="text-base-100 text-xs font-bold">
+            <Text className="text-text-muted text-caption">Sono:</Text>
+            <Text className="text-text text-caption font-bold">
               {entry.morning!.hoursSlept}h
             </Text>
           </View>
 
           <View className="flex-row items-center gap-1">
-            <Text className="text-base-500 text-xs">Qualidade:</Text>
-            <Text className="text-base-100 text-xs font-bold">
+            <Text className="text-text-muted text-caption">Qualidade:</Text>
+            <Text className="text-text text-caption font-bold">
               {SLEEP_QUALITY_LABELS[entry.morning!.sleepQuality]}
             </Text>
           </View>
@@ -83,7 +98,7 @@ export function EntryCard({ entry }: EntryCardProps) {
 
       {/* No data indicator */}
       {!hasMorning && !hasNoon && !hasEvening && (
-        <Text className="text-base-500/60 text-xs mt-1">
+        <Text className="text-text-muted text-caption mt-1">
           Nenhum formulario preenchido
         </Text>
       )}
