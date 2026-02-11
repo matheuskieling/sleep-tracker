@@ -1,9 +1,11 @@
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { useLocalSearchParams, Stack } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { useEntry } from "../../src/hooks/useEntry";
-import { formatDateDisplay } from "../../src/utils/date";
-import { FORM_ICONS, FORM_TITLES } from "../../src/config/constants";
+import { formatDateFull } from "../../src/utils/date";
+import { FORM_TITLES } from "../../src/config/constants";
+import type { FormType } from "../../src/types/entry";
 import {
   SLEEP_QUALITY_LABELS,
   MEAL_SIZE_LABELS,
@@ -24,10 +26,19 @@ function InfoRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function SectionHeader({ icon, title }: { icon: string; title: string }) {
+const SECTION_ICONS: Record<FormType, { icon: string; color: string; bg: string }> = {
+  morning: { icon: "moon-outline", color: "#652D07", bg: "bg-pastel-brown" },
+  noon: { icon: "sunny-outline", color: "#FF7617", bg: "bg-pastel-orange" },
+  evening: { icon: "partly-sunny-outline", color: "#D46010", bg: "bg-pastel-amber" },
+};
+
+function SectionHeader({ type, title }: { type: FormType; title: string }) {
+  const config = SECTION_ICONS[type];
   return (
-    <View className="flex-row items-center gap-2 mb-3 mt-5">
-      <Text className="text-lg">{icon}</Text>
+    <View className="flex-row items-center gap-3 mb-3 mt-5">
+      <View className={`w-9 h-9 rounded-full items-center justify-center ${config.bg}`}>
+        <Ionicons name={config.icon as any} size={18} color={config.color} />
+      </View>
       <Text className="text-text text-body font-bold">{title}</Text>
     </View>
   );
@@ -142,7 +153,7 @@ export default function EntryDetailScreen() {
   const { entry, loading } = useEntry(date);
   const insets = useSafeAreaInsets();
 
-  const displayDate = date ? formatDateDisplay(date) : "";
+  const displayDate = date ? formatDateFull(date) : "";
 
   if (loading) {
     return (
@@ -175,7 +186,7 @@ export default function EntryDetailScreen() {
       >
         <View className="p-5">
           {/* Morning */}
-          <SectionHeader icon={FORM_ICONS.morning} title={FORM_TITLES.morning} />
+          <SectionHeader type="morning" title={FORM_TITLES.morning} />
           {entry.morning ? (
             <MorningSection data={entry.morning} />
           ) : (
@@ -183,7 +194,7 @@ export default function EntryDetailScreen() {
           )}
 
           {/* Noon */}
-          <SectionHeader icon={FORM_ICONS.noon} title={FORM_TITLES.noon} />
+          <SectionHeader type="noon" title={FORM_TITLES.noon} />
           {entry.noon ? (
             <NoonSection data={entry.noon} />
           ) : (
@@ -191,7 +202,7 @@ export default function EntryDetailScreen() {
           )}
 
           {/* Evening */}
-          <SectionHeader icon={FORM_ICONS.evening} title={FORM_TITLES.evening} />
+          <SectionHeader type="evening" title={FORM_TITLES.evening} />
           {entry.evening ? (
             <EveningSection data={entry.evening} />
           ) : (
