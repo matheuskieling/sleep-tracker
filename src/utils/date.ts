@@ -74,6 +74,26 @@ export function formatDateExtended(dateString: string): string {
 }
 
 /**
+ * Format date as full PT-BR string (e.g., "Quarta-feira, 11/02/2026").
+ */
+export function formatDateFull(dateString: string): string {
+  const date = parseDate(dateString);
+  const weekday = WEEKDAY_NAMES[date.getDay()];
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${weekday}, ${dd}/${mm}/${year}`;
+}
+
+/**
+ * Convert internal YYYY-MM-DD to display DD/MM/YYYY (with slashes).
+ */
+export function toDisplayDateSlash(dateString: string): string {
+  const [year, month, day] = dateString.split("-");
+  return `${day}/${month}/${year}`;
+}
+
+/**
  * Format date short (e.g., "10/02").
  */
 export function formatDateShort(dateString: string): string {
