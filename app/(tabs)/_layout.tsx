@@ -1,54 +1,48 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Text } from "react-native";
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#1e1b4b", borderTopColor: "#312e81" },
-        tabBarActiveTintColor: "#818cf8",
-        tabBarInactiveTintColor: "#a5b4fc80",
+        tabBarStyle: { backgroundColor: "#0f172a", borderTopColor: "#334155" },
+        tabBarActiveTintColor: "#6366f1",
+        tabBarInactiveTintColor: "#64748b",
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Início",
-          tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 20 }}>🏠</Text>
+          title: "Inicio",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="forms"
-        options={{
-          href: null,
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
-          title: "Histórico",
+          title: "Historico",
           headerShown: true,
-          headerStyle: { backgroundColor: "#1e1b4b" },
-          headerTintColor: "#e0e7ff",
+          headerStyle: { backgroundColor: "#0f172a" },
+          headerTintColor: "#f1f5f9",
           headerShadowVisible: false,
-          tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 20 }}>📊</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar-outline" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="report"
         options={{
-          title: "Relatório",
+          title: "Relatorio",
           headerShown: true,
-          headerStyle: { backgroundColor: "#1e1b4b" },
-          headerTintColor: "#e0e7ff",
+          headerStyle: { backgroundColor: "#0f172a" },
+          headerTintColor: "#f1f5f9",
           headerShadowVisible: false,
-          tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 20 }}>🤖</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="document-text-outline" size={size} color={color} />
           ),
         }}
       />

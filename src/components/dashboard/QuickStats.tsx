@@ -56,10 +56,10 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon }: StatCardProps) {
   return (
-    <View className="flex-1 bg-primary-900 rounded-2xl p-4 items-center">
+    <View className="flex-1 bg-base-800 rounded-2xl p-4 items-center">
       <Text className="text-xl mb-1">{icon}</Text>
-      <Text className="text-white text-lg font-bold">{value}</Text>
-      <Text className="text-indigo-300 text-xs text-center mt-1">{label}</Text>
+      <Text className="text-base-100 text-lg font-bold">{value}</Text>
+      <Text className="text-base-400 text-xs text-center mt-1">{label}</Text>
     </View>
   );
 }
@@ -67,9 +67,9 @@ function StatCard({ label, value, icon }: StatCardProps) {
 export function QuickStats({ entries }: QuickStatsProps) {
   if (entries.length === 0) {
     return (
-      <View className="bg-primary-900 rounded-2xl p-6 items-center">
-        <Text className="text-indigo-300 text-sm text-center">
-          Nenhum dado disponível. Preencha os formulários para ver estatísticas.
+      <View className="bg-base-800 rounded-2xl p-6 items-center">
+        <Text className="text-base-400 text-sm text-center">
+          Nenhum dado disponivel. Preencha os formularios para ver estatisticas.
         </Text>
       </View>
     );
@@ -83,7 +83,7 @@ export function QuickStats({ entries }: QuickStatsProps) {
     <View className="flex-row gap-3">
       <StatCard
         icon="😴"
-        label="Média de sono"
+        label="Media de sono"
         value={avgSleep === "--" ? "--" : `${avgSleep}h`}
       />
       <StatCard
@@ -93,7 +93,7 @@ export function QuickStats({ entries }: QuickStatsProps) {
       />
       <StatCard
         icon="🔥"
-        label="Sequência"
+        label="Sequencia"
         value={`${streak} dia${streak !== 1 ? "s" : ""}`}
       />
     </View>

@@ -17,8 +17,10 @@ export function SubmitButton({
       onPress={onPress}
       disabled={loading}
       activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: loading }}
       className={`w-full py-4 rounded-2xl items-center justify-center mt-2 mb-6 ${
-        loading ? "bg-indigo-500/70" : "bg-indigo-500"
+        loading ? "bg-accent-dark opacity-70" : "bg-accent-dark"
       }`}
     >
       {loading ? (

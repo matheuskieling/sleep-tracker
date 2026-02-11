@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useReports } from "../../src/hooks/useReport";
 import { DateRangePicker } from "../../src/components/report/DateRangePicker";
@@ -32,7 +31,7 @@ export default function ReportScreen() {
       const entries = await getEntriesInRange(user.uid, startDate, endDate);
 
       if (entries.length === 0) {
-        Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
+        Alert.alert("Sem dados", "Nenhum registro encontrado no periodo selecionado.");
         return;
       }
 
@@ -43,7 +42,7 @@ export default function ReportScreen() {
       refreshReports();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erro desconhecido";
-      console.error("Erro ao gerar relatório:", err);
+      console.error("Erro ao gerar relatorio:", err);
       Alert.alert("Erro", message);
     } finally {
       setGenerating(false);
@@ -59,7 +58,7 @@ export default function ReportScreen() {
       const entries = await getEntriesInRange(user.uid, startDate, endDate);
 
       if (entries.length === 0) {
-        Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
+        Alert.alert("Sem dados", "Nenhum registro encontrado no periodo selecionado.");
         return;
       }
 
@@ -77,7 +76,7 @@ export default function ReportScreen() {
 
   async function handleDelete(reportId: string) {
     if (!user) return;
-    Alert.alert("Excluir relatório", "Tem certeza?", [
+    Alert.alert("Excluir relatorio", "Tem certeza?", [
       { text: "Cancelar", style: "cancel" },
       {
         text: "Excluir",
@@ -91,10 +90,10 @@ export default function ReportScreen() {
   }
 
   return (
-    <KeyboardAwareScrollView className="flex-1 bg-primary-950" contentContainerStyle={{ paddingBottom: 100 }}>
+    <ScrollView className="flex-1 bg-base-900" contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
-        <Text className="text-indigo-200 text-sm mb-4">
-          Selecione um período para gerar uma análise com IA dos seus dados de sono e hábitos.
+        <Text className="text-base-300 text-sm mb-4">
+          Selecione um periodo para gerar uma analise com IA dos seus dados de sono e habitos.
         </Text>
 
         <DateRangePicker
@@ -109,19 +108,19 @@ export default function ReportScreen() {
           disabled={generating || copyingPrompt}
           activeOpacity={0.8}
           className={`rounded-xl p-4 items-center mt-4 ${
-            generating ? "bg-indigo-800" : "bg-indigo-600"
+            generating ? "bg-accent-dark opacity-70" : "bg-accent-dark"
           }`}
         >
           {generating ? (
             <View className="flex-row items-center">
-              <ActivityIndicator color="#e0e7ff" />
-              <Text className="text-indigo-100 font-semibold text-base ml-2">
+              <ActivityIndicator color="#f1f5f9" />
+              <Text className="text-white font-semibold text-base ml-2">
                 Analisando...
               </Text>
             </View>
           ) : (
-            <Text className="text-indigo-100 font-semibold text-base">
-              Gerar Relatório IA
+            <Text className="text-white font-semibold text-base">
+              Gerar Relatorio IA
             </Text>
           )}
         </TouchableOpacity>
@@ -131,19 +130,19 @@ export default function ReportScreen() {
           disabled={generating || copyingPrompt}
           activeOpacity={0.8}
           className={`rounded-xl p-4 items-center mt-3 border ${
-            promptCopied ? "border-green-500 bg-green-600/20" : "border-indigo-700 bg-indigo-500/10"
+            promptCopied ? "border-green-500 bg-green-600/20" : "border-base-700 bg-accent-subtle"
           }`}
         >
           {copyingPrompt ? (
             <View className="flex-row items-center">
-              <ActivityIndicator color="#a5b4fc" />
-              <Text className="text-indigo-300 font-semibold text-base ml-2">
+              <ActivityIndicator color="#94a3b8" />
+              <Text className="text-base-400 font-semibold text-base ml-2">
                 Copiando...
               </Text>
             </View>
           ) : (
             <Text className={`font-semibold text-base ${
-              promptCopied ? "text-green-400" : "text-indigo-300"
+              promptCopied ? "text-green-400" : "text-base-400"
             }`}>
               {promptCopied ? "Prompt copiado!" : "Copiar Prompt"}
             </Text>
@@ -156,24 +155,24 @@ export default function ReportScreen() {
             <TouchableOpacity
               onPress={() => setReport("")}
               activeOpacity={0.8}
-              className="rounded-xl p-3 items-center mt-3 border border-indigo-700"
+              className="rounded-xl p-3 items-center mt-3 border border-base-700"
             >
-              <Text className="text-indigo-300 font-semibold text-sm">
-                Ocultar relatório
+              <Text className="text-base-400 font-semibold text-sm">
+                Ocultar relatorio
               </Text>
             </TouchableOpacity>
           </>
         )}
 
-        <Text className="text-indigo-200 font-semibold text-base mt-8 mb-4">
-          Relatórios salvos
+        <Text className="text-base-300 font-semibold text-base mt-8 mb-4">
+          Relatorios salvos
         </Text>
 
         {reportsLoading ? (
-          <ActivityIndicator color="#818cf8" className="my-4" />
+          <ActivityIndicator color="#6366f1" className="my-4" />
         ) : reports.length === 0 ? (
-          <Text className="text-indigo-400 text-sm text-center py-8">
-            Nenhum relatório salvo ainda.
+          <Text className="text-base-500 text-sm text-center py-8">
+            Nenhum relatorio salvo ainda.
           </Text>
         ) : (
           reports.map((r) => (
@@ -181,6 +180,6 @@ export default function ReportScreen() {
           ))
         )}
       </View>
-    </KeyboardAwareScrollView>
+    </ScrollView>
   );
 }

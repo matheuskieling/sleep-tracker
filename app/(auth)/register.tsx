@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -23,6 +23,10 @@ export default function RegisterScreen() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const confirmRef = useRef<TextInput>(null);
+
   async function handleSignUp() {
     if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       setError("Preencha todos os campos.");
@@ -30,7 +34,7 @@ export default function RegisterScreen() {
     }
 
     if (password !== confirmPassword) {
-      setError("As senhas não coincidem.");
+      setError("As senhas nao coincidem.");
       return;
     }
 
@@ -47,11 +51,11 @@ export default function RegisterScreen() {
       await refreshUserName();
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
-        setError("Este email já está em uso.");
+        setError("Este email ja esta em uso.");
       } else if (err.code === "auth/invalid-email") {
-        setError("Email inválido.");
+        setError("Email invalido.");
       } else if (err.code === "auth/weak-password") {
-        setError("A senha é muito fraca. Use pelo menos 6 caracteres.");
+        setError("A senha e muito fraca. Use pelo menos 6 caracteres.");
       } else {
         setError("Erro ao criar conta. Tente novamente.");
       }
@@ -61,13 +65,13 @@ export default function RegisterScreen() {
   }
 
   return (
-    <View className="flex-1 bg-primary-950">
+    <View className="flex-1 bg-base-900">
       <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom + 20 }}>
           <View className="flex-1 justify-center px-8">
-            <Text className="text-4xl font-bold text-indigo-100 text-center mb-2">
+            <Text className="text-4xl font-bold text-base-100 text-center mb-2">
               Sleep Tracker
             </Text>
-            <Text className="text-indigo-300 text-center mb-10 text-base">
+            <Text className="text-base-400 text-center mb-10 text-base">
               Crie sua conta
             </Text>
 
@@ -79,75 +83,86 @@ export default function RegisterScreen() {
               </View>
             )}
 
-            <Text className="text-indigo-200 text-sm mb-2 ml-1">Nome</Text>
+            <Text className="text-base-300 text-sm mb-2 ml-1">Nome</Text>
             <TextInput
-              className="bg-primary-900 border border-indigo-700 text-white rounded-xl p-4 mb-4"
+              className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4 mb-4"
               placeholder="Seu nome"
-              placeholderTextColor="#6366f1"
+              placeholderTextColor="#64748b"
               value={name}
               onChangeText={setName}
               autoCapitalize="words"
               autoComplete="name"
+              returnKeyType="next"
+              onSubmitEditing={() => emailRef.current?.focus()}
             />
 
-            <Text className="text-indigo-200 text-sm mb-2 ml-1">Email</Text>
+            <Text className="text-base-300 text-sm mb-2 ml-1">Email</Text>
             <TextInput
-              className="bg-primary-900 border border-indigo-700 text-white rounded-xl p-4 mb-4"
+              ref={emailRef}
+              className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4 mb-4"
               placeholder="seu@email.com"
-              placeholderTextColor="#6366f1"
+              placeholderTextColor="#64748b"
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
               keyboardType="email-address"
               autoComplete="email"
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current?.focus()}
             />
 
-            <Text className="text-indigo-200 text-sm mb-2 ml-1">Senha</Text>
+            <Text className="text-base-300 text-sm mb-2 ml-1">Senha</Text>
             <TextInput
-              className="bg-primary-900 border border-indigo-700 text-white rounded-xl p-4 mb-4"
-              placeholder="Mínimo 6 caracteres"
-              placeholderTextColor="#6366f1"
+              ref={passwordRef}
+              className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4 mb-4"
+              placeholder="Minimo 6 caracteres"
+              placeholderTextColor="#64748b"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
               autoComplete="new-password"
+              returnKeyType="next"
+              onSubmitEditing={() => confirmRef.current?.focus()}
             />
 
-            <Text className="text-indigo-200 text-sm mb-2 ml-1">
+            <Text className="text-base-300 text-sm mb-2 ml-1">
               Confirmar Senha
             </Text>
             <TextInput
-              className="bg-primary-900 border border-indigo-700 text-white rounded-xl p-4 mb-6"
+              ref={confirmRef}
+              className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4 mb-6"
               placeholder="Repita a senha"
-              placeholderTextColor="#6366f1"
+              placeholderTextColor="#64748b"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry
               autoComplete="new-password"
+              returnKeyType="done"
+              onSubmitEditing={handleSignUp}
             />
 
             <TouchableOpacity
-              className="bg-indigo-600 rounded-xl p-4 items-center mb-6"
+              className="bg-accent-dark rounded-xl p-4 items-center mb-6"
               onPress={handleSignUp}
               disabled={loading}
               activeOpacity={0.8}
             >
               {loading ? (
-                <ActivityIndicator color="#e0e7ff" />
+                <ActivityIndicator color="#f1f5f9" />
               ) : (
-                <Text className="text-indigo-100 font-semibold text-base">
+                <Text className="text-white font-semibold text-base">
                   Criar Conta
                 </Text>
               )}
             </TouchableOpacity>
 
             <View className="flex-row justify-center items-center">
-              <Text className="text-indigo-300 text-sm">
-                Já tem uma conta?{" "}
+              <Text className="text-base-400 text-sm">
+                Ja tem uma conta?{" "}
               </Text>
               <Link
                 href="/(auth)/login"
-                style={{ color: "#818cf8", fontWeight: "600", fontSize: 14 }}
+                style={{ color: "#6366f1", fontWeight: "600", fontSize: 14 }}
               >
                 Entrar
               </Link>

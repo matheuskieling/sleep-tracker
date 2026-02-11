@@ -16,7 +16,7 @@ export default function ReportDetailScreen() {
 
   async function handleDelete() {
     if (!user || !id) return;
-    Alert.alert("Excluir relatório", "Tem certeza?", [
+    Alert.alert("Excluir relatorio", "Tem certeza?", [
       { text: "Cancelar", style: "cancel" },
       {
         text: "Excluir",
@@ -32,8 +32,8 @@ export default function ReportDetailScreen() {
   if (loading) {
     return (
       <>
-        <Stack.Screen options={{ title: "Relatório" }} />
-        <View className="flex-1 bg-primary-950 items-center justify-center">
+        <Stack.Screen options={{ title: "Relatorio" }} />
+        <View className="flex-1 bg-base-900 items-center justify-center">
           <ActivityIndicator size="large" color="#6366f1" />
         </View>
       </>
@@ -43,9 +43,9 @@ export default function ReportDetailScreen() {
   if (!report) {
     return (
       <>
-        <Stack.Screen options={{ title: "Relatório" }} />
-        <View className="flex-1 bg-primary-950 items-center justify-center">
-          <Text className="text-indigo-400 text-sm">Relatório não encontrado.</Text>
+        <Stack.Screen options={{ title: "Relatorio" }} />
+        <View className="flex-1 bg-base-900 items-center justify-center">
+          <Text className="text-base-500 text-sm">Relatorio nao encontrado.</Text>
         </View>
       </>
     );
@@ -53,15 +53,15 @@ export default function ReportDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Relatório" }} />
-      <ScrollView className="flex-1 bg-primary-950" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
+      <Stack.Screen options={{ title: "Relatorio" }} />
+      <ScrollView className="flex-1 bg-base-900" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
         <View className="p-5">
-          <Text className="text-indigo-100 text-base font-semibold mb-1">
+          <Text className="text-base-100 text-base font-semibold mb-1">
             {toDisplayDate(report.startDate)} → {toDisplayDate(report.endDate)}
           </Text>
 
           {report.createdAt?.toDate && (
-            <Text className="text-indigo-400 text-xs mb-2">
+            <Text className="text-base-500 text-xs mb-2">
               Criado em {report.createdAt.toDate().toLocaleDateString("pt-BR")}
             </Text>
           )}
@@ -74,7 +74,7 @@ export default function ReportDetailScreen() {
             className="rounded-xl p-4 items-center mt-6 bg-red-900/40 border border-red-800"
           >
             <Text className="text-red-300 font-semibold text-sm">
-              Excluir relatório
+              Excluir relatorio
             </Text>
           </TouchableOpacity>
         </View>

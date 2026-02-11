@@ -12,13 +12,14 @@ Personal sleep and habit tracking app built with Expo + React Native + Firebase.
 - **expo-dev-client** (required for native Firebase modules, cannot use Expo Go)
 - **NativeWind v4** + Tailwind CSS v3
 - **Firebase Cloud Functions** (Node.js) for scheduled notifications
+- **@react-native-community/datetimepicker** for native date selection
 - **Claude API** (Sonnet 4.5) for data analysis
 
 ## Project Structure
 
 - `app/` - Expo Router screens (auth, tabs, form routes)
 - `app/(auth)/` - Login, register, forgot-password (unauthenticated)
-- `app/(tabs)/` - Dashboard, forms list, history, report (authenticated)
+- `app/(tabs)/` - Dashboard, history, report (authenticated)
 - `app/form/` - Morning, noon, evening form screens (stack navigation)
 - `src/types/` - TypeScript type definitions
 - `src/config/` - Firebase init, constants
@@ -79,19 +80,27 @@ Instead, use plain `<View>` with appropriate padding, or rely on Expo Router's `
 ## Style Guidelines
 
 - Use NativeWind `className` on all React Native components (`View`, `Text`, `TextInput`, `TouchableOpacity`, `ScrollView`, etc.)
-- Color palette: indigo-based dark theme (`bg-primary-950` as main background, `bg-primary-900` for cards)
-- Text colors: `text-indigo-100` (primary), `text-indigo-200` (secondary labels), `text-indigo-300` (muted), `text-indigo-400` (subtle)
-- Accent: `bg-indigo-600` for buttons, `bg-indigo-500/20` for active/selected states
-- Borders: `border-primary-800` (default), `border-indigo-500` (active), `border-indigo-700` (inputs)
+- Color palette: slate neutral (`base`) + indigo accent (`accent`) dark theme
+- Backgrounds: `bg-base-900` (#0f172a) for screens, `bg-base-800` (#1e293b) for cards/inputs
+- Text colors: `text-base-100` (#f1f5f9, primary), `text-base-300` (#cbd5e1, labels), `text-base-400` (#94a3b8, muted), `text-base-500` (#64748b, subtle)
+- Accent: `bg-accent-dark` (#4f46e5) for buttons, `bg-accent-subtle` (rgba(99,102,241,0.2)) for selected states
+- Borders: `border-base-700` (#334155, default/inputs), `border-accent` (#6366f1, active)
+- Semantic colors: emerald for "Sim"/success, red for "Nao"/danger, amber/sky/violet for morning/noon/evening forms
+- Placeholder color: `#64748b` (base-500) for all TextInputs
+- Headers: `backgroundColor: "#0f172a"`, `headerTintColor: "#f1f5f9"`, `headerShadowVisible: false`
+- Tab bar: bg `#0f172a`, borderTop `#334155`, active `#6366f1`, inactive `#64748b`
+- Touch targets: minimum `py-3` for interactive elements (RadioGroup, ToggleButton)
 - Border radius: `rounded-xl` for inputs/buttons, `rounded-2xl` for cards
 - Spacing: `p-5` for screen padding, `mb-4` between elements, `gap-3` for grid layouts
-- `Link` components from expo-router use inline `style={{}}` instead of `className` for text styles
+- `Link` components from expo-router use inline `style={{}}` with `color: "#6366f1"` for text styles
+- Accessibility: `accessibilityRole` and `accessibilityState` on interactive components
 
 ## Commands
 
 - `npx expo start` - Start Metro dev server
 - `npx expo run:android` - Build and run Android dev client
 - `npx expo run:ios` - Build and run iOS dev client
+- `.\rebuild-android.bat` - Clean rebuild of Android dev client (sets JAVA_HOME, cleans build artifacts, installs deps, runs build)
 - `cd functions && npm run build` - Build Cloud Functions
 - `cd functions && npm run deploy` - Deploy Cloud Functions
 

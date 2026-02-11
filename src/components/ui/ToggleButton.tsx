@@ -10,22 +10,24 @@ interface ToggleButtonProps {
 export function ToggleButton({ value, onChange, label }: ToggleButtonProps) {
   return (
     <View className="mb-4">
-      <Text className="text-indigo-100 text-base font-semibold mb-2">
+      <Text className="text-base-100 text-base font-semibold mb-2">
         {label}
       </Text>
       <View className="flex-row gap-2">
         <TouchableOpacity
           onPress={() => onChange(true)}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityState={{ selected: value }}
           className={`flex-1 py-3 rounded-xl border items-center ${
             value
-              ? "bg-indigo-500 border-indigo-400"
-              : "bg-primary-900 border-primary-800"
+              ? "bg-emerald-600 border-emerald-500"
+              : "bg-base-800 border-base-700"
           }`}
         >
           <Text
             className={`text-sm font-medium ${
-              value ? "text-white" : "text-indigo-300"
+              value ? "text-white" : "text-base-400"
             }`}
           >
             Sim
@@ -34,18 +36,20 @@ export function ToggleButton({ value, onChange, label }: ToggleButtonProps) {
         <TouchableOpacity
           onPress={() => onChange(false)}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityState={{ selected: !value }}
           className={`flex-1 py-3 rounded-xl border items-center ${
             !value
-              ? "bg-indigo-500 border-indigo-400"
-              : "bg-primary-900 border-primary-800"
+              ? "bg-red-500/20 border-red-500"
+              : "bg-base-800 border-base-700"
           }`}
         >
           <Text
             className={`text-sm font-medium ${
-              !value ? "text-white" : "text-indigo-300"
+              !value ? "text-red-400" : "text-base-400"
             }`}
           >
-            Não
+            Nao
           </Text>
         </TouchableOpacity>
       </View>

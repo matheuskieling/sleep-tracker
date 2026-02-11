@@ -31,27 +31,27 @@ export function ReportCard({ report, onDelete }: ReportCardProps) {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => router.push(`/report/${report.id}` as any)}
-      className="bg-primary-900 rounded-2xl p-4 mb-3"
+      className="bg-base-800 rounded-2xl p-4 mb-3"
     >
       <View className="flex-row items-center justify-between mb-2">
-        <Text className="text-indigo-100 text-sm font-semibold">
+        <Text className="text-base-100 text-sm font-semibold">
           {toDisplayDate(report.startDate)} → {toDisplayDate(report.endDate)}
         </Text>
         <TouchableOpacity
           onPress={() => onDelete(report.id)}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <Text className="text-indigo-400 text-xs">Excluir</Text>
+          <Text className="text-red-400 text-xs">Excluir</Text>
         </TouchableOpacity>
       </View>
 
       {createdDate ? (
-        <Text className="text-indigo-400 text-xs mb-2">
+        <Text className="text-base-500 text-xs mb-2">
           Criado em {createdDate}
         </Text>
       ) : null}
 
-      <Text className="text-indigo-300 text-xs" numberOfLines={2}>
+      <Text className="text-base-400 text-xs" numberOfLines={2}>
         {preview}...
       </Text>
     </TouchableOpacity>

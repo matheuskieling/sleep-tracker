@@ -30,19 +30,23 @@ export function TimeInput({
     onChange(formatted.length > 0 ? formatted : null);
   };
 
+  const isValid = value ? /^\d{2}:\d{2}$/.test(value) : false;
+
   return (
     <View className="mb-4">
-      <Text className="text-indigo-100 text-base font-semibold mb-2">
+      <Text className="text-base-100 text-base font-semibold mb-2">
         {label}
       </Text>
       <TextInput
         value={value ?? ""}
         onChangeText={handleChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#6366f1"
+        placeholderTextColor="#64748b"
         keyboardType="numeric"
         maxLength={5}
-        className="bg-primary-900 border border-primary-800 rounded-xl px-4 py-3 text-indigo-100 text-base"
+        className={`bg-base-800 border rounded-xl px-4 py-3 text-base-100 text-base ${
+          isValid ? "border-emerald-600" : "border-base-700"
+        }`}
       />
     </View>
   );

@@ -7,6 +7,6 @@ interface FormCardProps {
 
 export function FormCard({ children }: FormCardProps) {
   return (
-    <View className="bg-primary-900 rounded-2xl p-4 mb-4">{children}</View>
+    <View className="bg-base-800 border border-base-700 rounded-2xl p-4 mb-4">{children}</View>
   );
 }

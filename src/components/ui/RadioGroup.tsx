@@ -16,7 +16,7 @@ interface RadioGroupProps {
 export function RadioGroup({ options, value, onChange, label }: RadioGroupProps) {
   return (
     <View className="mb-4">
-      <Text className="text-indigo-100 text-base font-semibold mb-2">
+      <Text className="text-base-100 text-base font-semibold mb-2">
         {label}
       </Text>
       <View className="flex-row flex-wrap gap-2">
@@ -27,15 +27,17 @@ export function RadioGroup({ options, value, onChange, label }: RadioGroupProps)
               key={option.value}
               onPress={() => onChange(option.value)}
               activeOpacity={0.7}
-              className={`px-4 py-2 rounded-xl border ${
+              accessibilityRole="radio"
+              accessibilityState={{ selected: isSelected }}
+              className={`px-4 py-3 rounded-xl border ${
                 isSelected
-                  ? "bg-indigo-500 border-indigo-400"
-                  : "bg-primary-900 border-primary-800"
+                  ? "bg-accent border-accent-light"
+                  : "bg-base-800 border-base-700"
               }`}
             >
               <Text
                 className={`text-sm font-medium ${
-                  isSelected ? "text-white" : "text-indigo-300"
+                  isSelected ? "text-white" : "text-base-400"
                 }`}
               >
                 {option.label}

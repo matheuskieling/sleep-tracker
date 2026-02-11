@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, View } from "react-native";
+import { TextInput, View, Text } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -86,26 +86,32 @@ export function NoonForm({ onSubmit, initialData }: NoonFormProps) {
 
   return (
     <KeyboardAwareScrollView
-      className="flex-1 bg-primary-950"
+      className="flex-1 bg-base-900"
       contentContainerClassName="px-4 py-6"
       contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
       showsVerticalScrollIndicator={false}
     >
+      {initialData && (
+        <View className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-4">
+          <Text className="text-amber-400 text-sm font-medium">Editando registro existente</Text>
+        </View>
+      )}
+
       <FormCard>
-        <SectionHeader title="Manhã" icon="☀️" />
+        <SectionHeader title="Manha" icon="☀️" />
 
         <RadioGroup
           options={sleepinessOptions}
           value={morningSleepiness}
           onChange={setMorningSleepiness}
-          label="Tive sono de manhã?"
+          label="Tive sono de manha?"
         />
 
         {showSleepinessTime && (
           <TimeInput
             value={sleepinessTime}
             onChange={setSleepinessTime}
-            label="Horário do sono"
+            label="Horario do sono"
           />
         )}
 
@@ -117,25 +123,25 @@ export function NoonForm({ onSubmit, initialData }: NoonFormProps) {
           options={mealSizeOptions}
           value={breakfast}
           onChange={setBreakfast}
-          label="Café da manhã"
+          label="Cafe da manha"
         />
 
-        <ToggleButton value={coffee} onChange={setCoffee} label="Café?" />
+        <ToggleButton value={coffee} onChange={setCoffee} label="Cafe?" />
 
         <ToggleButton value={sweets} onChange={setSweets} label="Doce?" />
 
-        <ToggleButton value={exercise} onChange={setExercise} label="Exercício?" />
+        <ToggleButton value={exercise} onChange={setExercise} label="Exercicio?" />
 
         <View className="mb-4">
           <TextInput
             value={observations}
             onChangeText={setObservations}
-            placeholder="Observações"
-            placeholderTextColor="#6366f1"
+            placeholder="Observacoes"
+            placeholderTextColor="#64748b"
             multiline
             numberOfLines={4}
             textAlignVertical="top"
-            className="bg-primary-900 border border-indigo-700 text-white rounded-xl p-4"
+            className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4"
           />
         </View>
       </FormCard>

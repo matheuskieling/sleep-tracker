@@ -4,8 +4,9 @@ export default function FormLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: "#312e81" },
-        headerTintColor: "#e0e7ff",
+        headerStyle: { backgroundColor: "#0f172a" },
+        headerTintColor: "#f1f5f9",
+        headerShadowVisible: false,
       }}
     />
   );

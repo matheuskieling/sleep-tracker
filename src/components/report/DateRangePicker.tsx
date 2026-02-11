@@ -1,6 +1,7 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
-import { toDisplayDate, fromDisplayDate } from "../../utils/date";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { daysAgo, toDisplayDate, parseDate, formatDate } from "../../utils/date";
 
 interface DateRangePickerProps {
   startDate: string; // internal YYYY-MM-DD
@@ -9,71 +10,145 @@ interface DateRangePickerProps {
   onEndChange: (date: string) => void;
 }
 
+const PRESETS = [
+  { label: "7 dias", days: 7 },
+  { label: "14 dias", days: 14 },
+  { label: "30 dias", days: 30 },
+];
+
 export function DateRangePicker({
   startDate,
   endDate,
   onStartChange,
   onEndChange,
 }: DateRangePickerProps) {
-  function handleStartChange(text: string) {
-    // User types DD-MM-YYYY, convert to internal YYYY-MM-DD
-    if (text.match(/^\d{2}-\d{2}-\d{4}$/)) {
-      onStartChange(fromDisplayDate(text));
-    } else {
-      // Allow partial typing by storing raw - will convert when complete
-      onStartChange(text);
+  const [showPicker, setShowPicker] = useState<"start" | "end" | null>(null);
+  const today = new Date();
+
+  function handlePreset(days: number) {
+    onStartChange(daysAgo(days));
+    onEndChange(daysAgo(0));
+    setShowPicker(null);
+  }
+
+  function handleDateChange(_event: any, selectedDate?: Date) {
+    if (Platform.OS === "android") {
+      setShowPicker(null);
+    }
+
+    if (!selectedDate) return;
+
+    const formatted = formatDate(selectedDate);
+
+    if (showPicker === "start") {
+      // Ensure start <= end
+      if (formatted <= endDate) {
+        onStartChange(formatted);
+      } else {
+        onStartChange(formatted);
+        onEndChange(formatted);
+      }
+    } else if (showPicker === "end") {
+      // Ensure end >= start and end <= today
+      const todayStr = formatDate(today);
+      if (formatted >= startDate && formatted <= todayStr) {
+        onEndChange(formatted);
+      }
+    }
+
+    if (Platform.OS === "android") {
+      setShowPicker(null);
     }
   }
 
-  function handleEndChange(text: string) {
-    if (text.match(/^\d{2}-\d{2}-\d{4}$/)) {
-      onEndChange(fromDisplayDate(text));
-    } else {
-      onEndChange(text);
-    }
-  }
-
-  // Display as DD-MM-YYYY if the value is valid internal format
-  const displayStart = startDate.match(/^\d{4}-\d{2}-\d{2}$/)
-    ? toDisplayDate(startDate)
-    : startDate;
-  const displayEnd = endDate.match(/^\d{4}-\d{2}-\d{2}$/)
-    ? toDisplayDate(endDate)
-    : endDate;
+  const activePreset = PRESETS.find(
+    (p) => startDate === daysAgo(p.days) && endDate === daysAgo(0)
+  );
 
   return (
-    <View className="flex-row gap-3">
-      <View className="flex-1">
-        <Text className="text-indigo-100 text-sm font-semibold mb-2">
-          Data Início
-        </Text>
-        <TextInput
-          value={displayStart}
-          onChangeText={handleStartChange}
-          placeholder="DD-MM-YYYY"
-          placeholderTextColor="#6366f1"
-          keyboardType="default"
-          autoCapitalize="none"
-          autoCorrect={false}
-          className="bg-primary-900 border border-indigo-700 text-white rounded-xl px-4 py-3 text-sm"
-        />
+    <View>
+      {/* Preset buttons */}
+      <View className="flex-row gap-2 mb-4">
+        {PRESETS.map((preset) => {
+          const isActive = activePreset?.days === preset.days;
+          return (
+            <TouchableOpacity
+              key={preset.days}
+              onPress={() => handlePreset(preset.days)}
+              activeOpacity={0.7}
+              className={`flex-1 py-2.5 rounded-xl items-center border ${
+                isActive
+                  ? "bg-accent-dark border-accent"
+                  : "bg-base-800 border-base-700"
+              }`}
+            >
+              <Text
+                className={`text-sm font-semibold ${
+                  isActive ? "text-white" : "text-base-400"
+                }`}
+              >
+                {preset.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
 
-      <View className="flex-1">
-        <Text className="text-indigo-100 text-sm font-semibold mb-2">
-          Data Fim
-        </Text>
-        <TextInput
-          value={displayEnd}
-          onChangeText={handleEndChange}
-          placeholder="DD-MM-YYYY"
-          placeholderTextColor="#6366f1"
-          keyboardType="default"
-          autoCapitalize="none"
-          autoCorrect={false}
-          className="bg-primary-900 border border-indigo-700 text-white rounded-xl px-4 py-3 text-sm"
-        />
+      {/* Date buttons */}
+      <View className="flex-row gap-3">
+        <View className="flex-1">
+          <Text className="text-base-100 text-sm font-semibold mb-2">
+            Data Inicio
+          </Text>
+          <TouchableOpacity
+            onPress={() => setShowPicker("start")}
+            activeOpacity={0.7}
+            className="bg-base-800 border border-base-700 rounded-xl px-4 py-3"
+          >
+            <Text className="text-base-100 text-sm">
+              {toDisplayDate(startDate)}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View className="flex-1">
+          <Text className="text-base-100 text-sm font-semibold mb-2">
+            Data Fim
+          </Text>
+          <TouchableOpacity
+            onPress={() => setShowPicker("end")}
+            activeOpacity={0.7}
+            className="bg-base-800 border border-base-700 rounded-xl px-4 py-3"
+          >
+            <Text className="text-base-100 text-sm">
+              {toDisplayDate(endDate)}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
+
+      {/* Native DateTimePicker */}
+      {showPicker && (
+        <View className="mt-3">
+          <DateTimePicker
+            value={parseDate(showPicker === "start" ? startDate : endDate)}
+            mode="date"
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            maximumDate={today}
+            minimumDate={showPicker === "end" ? parseDate(startDate) : undefined}
+            onChange={handleDateChange}
+          />
+          {Platform.OS === "ios" && (
+            <TouchableOpacity
+              onPress={() => setShowPicker(null)}
+              activeOpacity={0.7}
+              className="bg-accent-dark rounded-xl py-2.5 items-center mt-2"
+            >
+              <Text className="text-white text-sm font-semibold">OK</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
     </View>
   );
 }
