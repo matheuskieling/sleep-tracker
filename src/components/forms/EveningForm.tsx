@@ -84,14 +84,14 @@ export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
 
   return (
     <KeyboardAwareScrollView
-      className="flex-1 bg-base-900"
-      contentContainerClassName="px-4 py-6"
+      className="flex-1 bg-surface"
+      contentContainerClassName="px-5 py-8"
       contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
       showsVerticalScrollIndicator={false}
     >
       {initialData && (
-        <View className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-4">
-          <Text className="text-amber-400 text-sm font-medium">Editando registro existente</Text>
+        <View className="bg-accent-subtle rounded-full p-3 mb-4">
+          <Text className="text-accent-dark text-sm font-medium text-center">Editando registro existente</Text>
         </View>
       )}
 
@@ -133,11 +133,11 @@ export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
             value={observations}
             onChangeText={setObservations}
             placeholder="Observacoes"
-            placeholderTextColor="#64748b"
+            placeholderTextColor="#A09389"
             multiline
             numberOfLines={4}
             textAlignVertical="top"
-            className="bg-base-800 border border-base-700 text-base-100 rounded-xl p-4"
+            className="bg-surface-card border border-border text-text rounded-[20px] p-4"
           />
         </View>
       </FormCard>
