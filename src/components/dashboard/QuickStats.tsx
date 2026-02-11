@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import type { DayEntry } from "../../types/entry";
 import { SLEEP_QUALITY_LABELS } from "../../utils/form-labels";
@@ -31,7 +32,6 @@ function computeMostCommonQuality(entries: DayEntry[]): string {
 }
 
 function computeStreak(entries: DayEntry[]): number {
-  // Count consecutive days from most recent that have at least one form filled
   const sorted = [...entries].sort((a, b) =>
     b.dateString.localeCompare(a.dateString)
   );
@@ -52,14 +52,27 @@ interface StatCardProps {
   label: string;
   value: string;
   icon: string;
+  iconColor: string;
+  iconBg: string;
 }
 
-function StatCard({ label, value, icon }: StatCardProps) {
+function StatCard({ label, value, icon, iconColor, iconBg }: StatCardProps) {
   return (
-    <View className="flex-1 bg-base-800 rounded-2xl p-4 items-center">
-      <Text className="text-xl mb-1">{icon}</Text>
-      <Text className="text-base-100 text-lg font-bold">{value}</Text>
-      <Text className="text-base-400 text-xs text-center mt-1">{label}</Text>
+    <View
+      className="flex-1 bg-surface-card rounded-card p-3 items-center"
+      style={{
+        shadowColor: "#6B5E57",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
+    >
+      <View className={`w-9 h-9 rounded-xl items-center justify-center mb-2 ${iconBg}`}>
+        <Ionicons name={icon as any} size={18} color={iconColor} />
+      </View>
+      <Text className="text-text text-heading-m font-bold">{value}</Text>
+      <Text className="text-text-muted text-caption text-center mt-1">{label}</Text>
     </View>
   );
 }
@@ -67,8 +80,17 @@ function StatCard({ label, value, icon }: StatCardProps) {
 export function QuickStats({ entries }: QuickStatsProps) {
   if (entries.length === 0) {
     return (
-      <View className="bg-base-800 rounded-2xl p-6 items-center">
-        <Text className="text-base-400 text-sm text-center">
+      <View
+        className="bg-surface-card rounded-card p-6 items-center"
+        style={{
+          shadowColor: "#6B5E57",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 2,
+        }}
+      >
+        <Text className="text-text-muted text-body text-center">
           Nenhum dado disponivel. Preencha os formularios para ver estatisticas.
         </Text>
       </View>
@@ -82,19 +104,25 @@ export function QuickStats({ entries }: QuickStatsProps) {
   return (
     <View className="flex-row gap-3">
       <StatCard
-        icon="😴"
+        icon="bed-outline"
+        iconColor="#652D07"
+        iconBg="bg-pastel-brown"
         label="Media de sono"
         value={avgSleep === "--" ? "--" : `${avgSleep}h`}
       />
       <StatCard
-        icon="⭐"
-        label="Qualidade comum"
+        icon="star-outline"
+        iconColor="#FF7617"
+        iconBg="bg-pastel-orange"
+        label="Qualidade"
         value={topQuality}
       />
       <StatCard
-        icon="🔥"
+        icon="flame-outline"
+        iconColor="#D46010"
+        iconBg="bg-pastel-amber"
         label="Sequencia"
-        value={`${streak} dia${streak !== 1 ? "s" : ""}`}
+        value={`${streak}d`}
       />
     </View>
   );

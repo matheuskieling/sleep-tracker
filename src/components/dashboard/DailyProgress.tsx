@@ -1,15 +1,16 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { FORM_TITLES, FORM_ICONS } from "../../config/constants";
+import { FORM_CARD_TITLES } from "../../config/constants";
 import type { FormType } from "../../types/entry";
 
 const FORM_TYPES: FormType[] = ["morning", "noon", "evening"];
 
-const FORM_COLORS: Record<FormType, { border: string; bg: string }> = {
-  morning: { border: "border-amber-500", bg: "bg-amber-500/10" },
-  noon: { border: "border-sky-500", bg: "bg-sky-500/10" },
-  evening: { border: "border-violet-500", bg: "bg-violet-500/10" },
+const FORM_CONFIG: Record<FormType, { icon: string; iconColor: string; iconBg: string }> = {
+  morning: { icon: "moon-outline", iconColor: "#652D07", iconBg: "bg-pastel-brown" },
+  noon: { icon: "sunny-outline", iconColor: "#FF7617", iconBg: "bg-pastel-orange" },
+  evening: { icon: "partly-sunny-outline", iconColor: "#D46010", iconBg: "bg-pastel-amber" },
 };
 
 interface DailyProgressProps {
@@ -22,36 +23,45 @@ export function DailyProgress({ status, onFormPress }: DailyProgressProps) {
     <View className="flex-row gap-3">
       {FORM_TYPES.map((type) => {
         const completed = status[type];
-        const colors = FORM_COLORS[type];
+        const config = FORM_CONFIG[type];
 
         return (
           <TouchableOpacity
             key={type}
             onPress={() => onFormPress(type)}
             activeOpacity={0.7}
-            className={`flex-1 rounded-2xl p-4 items-center border ${
+            className={`flex-1 rounded-card p-4 items-center border ${
               completed
-                ? `${colors.bg} ${colors.border}`
-                : "bg-base-800 border-base-700"
+                ? "bg-success-light border-success"
+                : "bg-surface-card border-border"
             }`}
+            style={{
+              shadowColor: "#6B5E57",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.06,
+              shadowRadius: 8,
+              elevation: 2,
+            }}
           >
-            <Text className="text-2xl mb-2">{FORM_ICONS[type]}</Text>
+            <View className={`w-10 h-10 rounded-xl items-center justify-center mb-2 ${config.iconBg}`}>
+              <Ionicons name={config.icon as any} size={20} color={config.iconColor} />
+            </View>
 
             <Text
-              className="text-base-100 text-xs font-semibold text-center mb-2"
+              className="text-text text-caption font-semibold text-center mb-2"
               numberOfLines={2}
             >
-              {FORM_TITLES[type]}
+              {FORM_CARD_TITLES[type]}
             </Text>
 
             <View
               className={`px-3 py-1 rounded-full ${
-                completed ? "bg-green-600" : "bg-base-700"
+                completed ? "bg-success" : "bg-surface-input"
               }`}
             >
               <Text
-                className={`text-xs font-bold ${
-                  completed ? "text-green-100" : "text-base-400"
+                className={`text-caption font-bold ${
+                  completed ? "text-text-inverse" : "text-text-muted"
                 }`}
               >
                 {completed ? "Feito" : "Pendente"}
