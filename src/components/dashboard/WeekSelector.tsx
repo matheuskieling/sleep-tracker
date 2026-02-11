@@ -30,7 +30,7 @@ function getMondayOfWeek(date: Date): Date {
   return d;
 }
 
-function getWeekDays(monday: Date): { label: string; day: number; dateStr: string; isToday: boolean }[] {
+function getWeekDays(monday: Date): { label: string; day: number; dateStr: string; isToday: boolean; isFuture: boolean }[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -45,6 +45,7 @@ function getWeekDays(monday: Date): { label: string; day: number; dateStr: strin
       day: d.getDate(),
       dateStr: formatDateStr(d),
       isToday: d.getTime() === today.getTime(),
+      isFuture: d.getTime() > today.getTime(),
     });
   }
   return days;
@@ -79,7 +80,11 @@ function WeekPage({ monday, selectedDate, onDateChange, width }: WeekPageProps) 
           <View key={d.dateStr + "-label"} className="flex-1 items-center">
             <Text
               className={`text-caption font-medium ${
-                d.dateStr === selectedDate ? "text-text" : "text-text-muted"
+                d.isFuture
+                  ? "text-text-muted opacity-40"
+                  : d.dateStr === selectedDate
+                  ? "text-text"
+                  : "text-text-muted"
               }`}
             >
               {d.label}
@@ -95,10 +100,13 @@ function WeekPage({ monday, selectedDate, onDateChange, width }: WeekPageProps) 
           return (
             <View key={d.dateStr} className="flex-1 items-center">
               <TouchableOpacity
-                onPress={() => onDateChange(d.dateStr)}
-                activeOpacity={0.7}
+                onPress={() => !d.isFuture && onDateChange(d.dateStr)}
+                activeOpacity={d.isFuture ? 1 : 0.7}
+                disabled={d.isFuture}
                 className={`w-10 h-10 rounded-full items-center justify-center ${
-                  isSelected
+                  d.isFuture
+                    ? ""
+                    : isSelected
                     ? "bg-primary"
                     : d.isToday
                     ? "bg-surface-hover"
@@ -107,7 +115,11 @@ function WeekPage({ monday, selectedDate, onDateChange, width }: WeekPageProps) 
               >
                 <Text
                   className={`text-body font-semibold ${
-                    isSelected ? "text-text-inverse" : "text-text"
+                    d.isFuture
+                      ? "text-text-muted opacity-40"
+                      : isSelected
+                      ? "text-text-inverse"
+                      : "text-text"
                   }`}
                 >
                   {d.day}

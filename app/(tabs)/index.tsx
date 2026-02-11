@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import Constants from "expo-constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useAuth } from "../../src/hooks/useAuth";
-import { useTodayStatus, useEntryRange } from "../../src/hooks/useEntry";
+import { useDateStatus, useEntryRange } from "../../src/hooks/useEntry";
 import { WeekSelector } from "../../src/components/dashboard/WeekSelector";
-import { ChecklistCard } from "../../src/components/dashboard/ChecklistCard";
-import { QuickStats } from "../../src/components/dashboard/QuickStats";
+import { ChecklistCard, ChecklistCardSkeleton } from "../../src/components/dashboard/ChecklistCard";
+import { QuickStats, QuickStatsSkeleton } from "../../src/components/dashboard/QuickStats";
 import { signOut } from "../../src/services/auth";
 import { daysAgo, getTodayString, formatDate } from "../../src/utils/date";
 import { FORM_CARD_TITLES } from "../../src/config/constants";
@@ -46,7 +46,7 @@ export default function DashboardScreen() {
   const { user, userName } = useAuth();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(getTodayString());
-  const { status, loading: statusLoading, refresh: refreshStatus } = useTodayStatus();
+  const { status, loading: statusLoading, refresh: refreshStatus } = useDateStatus(selectedDate);
   const { entries, loading: entriesLoading, refresh: refreshEntries } = useEntryRange(daysAgo(7), daysAgo(0));
 
   useFocusEffect(
@@ -112,7 +112,7 @@ export default function DashboardScreen() {
         </Text>
 
         {entriesLoading ? (
-          <ActivityIndicator color="#FF7617" className="my-4" />
+          <QuickStatsSkeleton />
         ) : (
           <QuickStats entries={entries} />
         )}
@@ -131,7 +131,16 @@ export default function DashboardScreen() {
         </View>
 
         {statusLoading ? (
-          <ActivityIndicator color="#FF7617" className="my-6" />
+          <View>
+            {FORM_TYPES.map((type, index) => (
+              <ChecklistCardSkeleton
+                key={type}
+                type={type}
+                title={FORM_CARD_TITLES[type]}
+                isLast={index === FORM_TYPES.length - 1}
+              />
+            ))}
+          </View>
         ) : (
           <View>
             {FORM_TYPES.map((type, index) => (

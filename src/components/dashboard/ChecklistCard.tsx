@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Skeleton } from "../ui/Skeleton";
 import type { FormType } from "../../types/entry";
 
 interface ChecklistCardProps {
@@ -100,6 +101,63 @@ export function ChecklistCard({ type, title, completed, streak, isLast = false, 
           </Text>
         </View>
       </TouchableOpacity>
+    </View>
+  );
+}
+
+interface ChecklistCardSkeletonProps {
+  type: FormType;
+  title: string;
+  isLast?: boolean;
+}
+
+export function ChecklistCardSkeleton({ type, title, isLast = false }: ChecklistCardSkeletonProps) {
+  const config = CARD_CONFIG[type];
+
+  return (
+    <View className="flex-row">
+      {/* Timeline column */}
+      <View className="items-center mr-3 pt-1" style={{ width: 28 }}>
+        <View className="w-7 h-7 rounded-full border-2 border-border" />
+        {!isLast && (
+          <View className="flex-1 items-center mt-1" style={{ width: 2 }}>
+            <View
+              className="flex-1"
+              style={{
+                width: 2,
+                borderLeftWidth: 2,
+                borderLeftColor: "#E8DDD6",
+                borderStyle: "dashed",
+              }}
+            />
+          </View>
+        )}
+      </View>
+
+      {/* Skeleton Card */}
+      <View
+        className="flex-1 bg-surface-card rounded-card p-4 mb-3 flex-row items-center"
+        style={{
+          shadowColor: "#6B5E57",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 2,
+        }}
+      >
+        <View className={`w-11 h-11 rounded-xl items-center justify-center mr-3 ${config.iconBg}`}>
+          <Ionicons name={config.icon as any} size={22} color={config.iconColor} />
+        </View>
+
+        <View className="flex-1">
+          <Text className="text-text text-body font-semibold" numberOfLines={1}>
+            {title}
+          </Text>
+          <Skeleton width={80} height={16} borderRadius={6} className="mt-0.5" />
+        </View>
+
+        <Skeleton width={56} height={28} borderRadius={14} />
+      </View>
     </View>
   );
 }

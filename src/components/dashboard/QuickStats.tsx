@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Skeleton } from "../ui/Skeleton";
 
 import type { DayEntry } from "../../types/entry";
 import { SLEEP_QUALITY_LABELS } from "../../utils/form-labels";
@@ -123,6 +124,52 @@ export function QuickStats({ entries }: QuickStatsProps) {
         iconBg="bg-pastel-amber"
         label="Sequencia"
         value={`${streak}d`}
+      />
+    </View>
+  );
+}
+
+function StatCardSkeleton({ icon, iconColor, iconBg, label }: Omit<StatCardProps, "value">) {
+  return (
+    <View
+      className="flex-1 bg-surface-card rounded-card p-3 items-center"
+      style={{
+        shadowColor: "#6B5E57",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+      }}
+    >
+      <View className={`w-9 h-9 rounded-xl items-center justify-center mb-2 ${iconBg}`}>
+        <Ionicons name={icon as any} size={18} color={iconColor} />
+      </View>
+      <Skeleton width={40} height={28} borderRadius={6} />
+      <Text className="text-text-muted text-caption text-center mt-1">{label}</Text>
+    </View>
+  );
+}
+
+export function QuickStatsSkeleton() {
+  return (
+    <View className="flex-row gap-3">
+      <StatCardSkeleton
+        icon="bed-outline"
+        iconColor="#652D07"
+        iconBg="bg-pastel-brown"
+        label="Media de sono"
+      />
+      <StatCardSkeleton
+        icon="star-outline"
+        iconColor="#FF7617"
+        iconBg="bg-pastel-orange"
+        label="Qualidade"
+      />
+      <StatCardSkeleton
+        icon="flame-outline"
+        iconColor="#D46010"
+        iconBg="bg-pastel-amber"
+        label="Sequencia"
       />
     </View>
   );
