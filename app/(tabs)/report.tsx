@@ -108,7 +108,7 @@ export default function ReportScreen() {
           disabled={generating || copyingPrompt}
           activeOpacity={0.8}
           className={`rounded-button p-4 items-center mt-4 ${
-            generating ? "bg-primary opacity-70" : "bg-accent"
+            generating ? "bg-primary" : "bg-accent"
           }`}
         >
           {generating ? (
