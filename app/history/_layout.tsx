@@ -4,8 +4,8 @@ export default function HistoryLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: "#0f172a" },
-        headerTintColor: "#f1f5f9",
+        headerStyle: { backgroundColor: "#F8F2EF" },
+        headerTintColor: "#292D32",
         headerShadowVisible: false,
       }}
     />

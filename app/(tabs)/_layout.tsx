@@ -6,9 +6,13 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#0f172a", borderTopColor: "#334155" },
-        tabBarActiveTintColor: "#6366f1",
-        tabBarInactiveTintColor: "#64748b",
+        tabBarStyle: {
+          backgroundColor: "#FFFFFF",
+          borderTopColor: "#E8DDD6",
+          borderTopWidth: 1,
+        },
+        tabBarActiveTintColor: "#652D07",
+        tabBarInactiveTintColor: "#A09389",
       }}
     >
       <Tabs.Screen
@@ -25,8 +29,8 @@ export default function TabsLayout() {
         options={{
           title: "Historico",
           headerShown: true,
-          headerStyle: { backgroundColor: "#0f172a" },
-          headerTintColor: "#f1f5f9",
+          headerStyle: { backgroundColor: "#F8F2EF" },
+          headerTintColor: "#292D32",
           headerShadowVisible: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar-outline" size={size} color={color} />
@@ -38,8 +42,8 @@ export default function TabsLayout() {
         options={{
           title: "Relatorio",
           headerShown: true,
-          headerStyle: { backgroundColor: "#0f172a" },
-          headerTintColor: "#f1f5f9",
+          headerStyle: { backgroundColor: "#F8F2EF" },
+          headerTintColor: "#292D32",
           headerShadowVisible: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="document-text-outline" size={size} color={color} />
