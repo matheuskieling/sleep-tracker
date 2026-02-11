@@ -153,6 +153,21 @@ export async function getTodayStatus(
   };
 }
 
+/**
+ * Check which forms have been submitted for a specific date.
+ */
+export async function getDateStatus(
+  userId: string,
+  dateString: string
+): Promise<{ morning: boolean; noon: boolean; evening: boolean }> {
+  const entry = await getEntry(userId, dateString);
+  return {
+    morning: !!entry?.morning,
+    noon: !!entry?.noon,
+    evening: !!entry?.evening,
+  };
+}
+
 // --- Reports ---
 
 function reportsCollection(userId: string) {

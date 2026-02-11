@@ -5,6 +5,7 @@ import {
   getEntry,
   getEntriesInRange,
   getTodayStatus,
+  getDateStatus,
 } from "../services/firestore";
 import { getTodayString } from "../utils/date";
 
@@ -52,6 +53,33 @@ export function useTodayStatus() {
       setLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return { status, loading, refresh };
+}
+
+export function useDateStatus(dateString: string) {
+  const { user } = useAuth();
+  const [status, setStatus] = useState({
+    morning: false,
+    noon: false,
+    evening: false,
+  });
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      const result = await getDateStatus(user.uid, dateString);
+      setStatus(result);
+    } finally {
+      setLoading(false);
+    }
+  }, [user, dateString]);
 
   useEffect(() => {
     refresh();
