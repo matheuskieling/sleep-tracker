@@ -27,8 +27,8 @@ fi
 echo "      Port 8081 is free"
 echo ""
 
-# Clean Android build artifacts
-echo "[2/4] Cleaning Android build..."
+# Clean Android build artifacts and Expo caches
+echo "[2/5] Cleaning Android build..."
 if [ -d "android/app/build" ]; then
     rm -rf android/app/build
     echo "      Removed android/app/build"
@@ -44,14 +44,23 @@ else
 fi
 echo ""
 
+echo "[3/5] Clearing Expo caches..."
+if [ -d ".expo" ]; then
+    rm -rf .expo
+    echo "      Removed .expo cache"
+else
+    echo "      No .expo cache to clean"
+fi
+echo ""
+
 # Install JS dependencies
-echo "[3/4] Installing dependencies..."
+echo "[4/5] Installing dependencies..."
 npm install
 echo ""
 
-# Build and run Android dev client
-echo "[4/4] Building Android dev client..."
-npx expo run:android
+# Prebuild and run Android dev client
+echo "[5/5] Building Android dev client..."
+npx expo prebuild --platform android --clean && npx expo run:android
 
 echo ""
 echo "========================================"
