@@ -92,7 +92,7 @@ export function QuickStats({ entries }: QuickStatsProps) {
         }}
       >
         <Text className="text-text-muted text-body text-center">
-          Nenhum dado disponivel. Preencha os formularios para ver estatisticas.
+          Nenhum dado disponível. Preencha os formulários para ver estatísticas.
         </Text>
       </View>
     );
@@ -108,7 +108,7 @@ export function QuickStats({ entries }: QuickStatsProps) {
         icon="bed-outline"
         iconColor="#652D07"
         iconBg="bg-pastel-brown"
-        label="Media de sono"
+        label="Média de sono"
         value={avgSleep === "--" ? "--" : `${avgSleep}h`}
       />
       <StatCard
@@ -122,7 +122,7 @@ export function QuickStats({ entries }: QuickStatsProps) {
         icon="flame-outline"
         iconColor="#D46010"
         iconBg="bg-pastel-amber"
-        label="Sequencia"
+        label="Sequência"
         value={`${streak}d`}
       />
     </View>
@@ -157,7 +157,7 @@ export function QuickStatsSkeleton() {
         icon="bed-outline"
         iconColor="#652D07"
         iconBg="bg-pastel-brown"
-        label="Media de sono"
+        label="Média de sono"
       />
       <StatCardSkeleton
         icon="star-outline"
@@ -169,7 +169,7 @@ export function QuickStatsSkeleton() {
         icon="flame-outline"
         iconColor="#D46010"
         iconBg="bg-pastel-amber"
-        label="Sequencia"
+        label="Sequência"
       />
     </View>
   );

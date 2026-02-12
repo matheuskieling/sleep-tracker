@@ -112,14 +112,14 @@ export function MorningForm({ onSubmit, initialData }: MorningFormProps) {
           options={wakeSleepinessOptions}
           value={wakeSleepiness}
           onChange={setWakeSleepiness}
-          label="Nivel de sono ao acordar"
+          label="Nível de sono ao acordar"
         />
 
         <View className="mb-4">
           <TextInput
             value={observations}
             onChangeText={setObservations}
-            placeholder="Observacoes"
+            placeholder="Observações"
             placeholderTextColor="#A09389"
             multiline
             numberOfLines={4}

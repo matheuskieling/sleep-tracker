@@ -99,7 +99,7 @@ export function EntryCard({ entry }: EntryCardProps) {
       {/* No data indicator */}
       {!hasMorning && !hasNoon && !hasEvening && (
         <Text className="text-text-muted text-caption mt-1">
-          Nenhum formulario preenchido
+          Nenhum formulário preenchido
         </Text>
       )}
     </TouchableOpacity>

@@ -60,14 +60,14 @@ export default function HistoryScreen() {
             }}
           >
             <Text className="text-text-muted text-body text-center mb-4">
-              Nenhum registro encontrado neste periodo.
+              Nenhum registro encontrado neste período.
             </Text>
             <TouchableOpacity
               onPress={() => router.push("/(tabs)" as any)}
               activeOpacity={0.7}
               className="bg-primary rounded-button px-6 py-3"
             >
-              <Text className="text-text-inverse text-sm font-semibold">Preencher formulario</Text>
+              <Text className="text-text-inverse text-sm font-semibold">Preencher formulário</Text>
             </TouchableOpacity>
           </View>
         ) : (

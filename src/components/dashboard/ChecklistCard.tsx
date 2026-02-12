@@ -80,8 +80,8 @@ export function ChecklistCard({ type, title, completed, streak, isLast = false, 
           <Text className="text-text-muted text-caption mt-0.5">
             {completed
               ? streak > 0
-                ? `Sequencia ${streak} dia${streak !== 1 ? "s" : ""}`
-                : "Concluido"
+                ? `Sequência ${streak} dia${streak !== 1 ? "s" : ""}`
+                : "Concluído"
               : "Pendente"}
           </Text>
         </View>

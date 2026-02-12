@@ -31,7 +31,7 @@ export default function ReportScreen() {
       const entries = await getEntriesInRange(user.uid, startDate, endDate);
 
       if (entries.length === 0) {
-        Alert.alert("Sem dados", "Nenhum registro encontrado no periodo selecionado.");
+        Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
         return;
       }
 
@@ -42,7 +42,7 @@ export default function ReportScreen() {
       refreshReports();
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erro desconhecido";
-      console.error("Erro ao gerar relatorio:", err);
+      console.error("Erro ao gerar relatório:", err);
       Alert.alert("Erro", message);
     } finally {
       setGenerating(false);
@@ -58,7 +58,7 @@ export default function ReportScreen() {
       const entries = await getEntriesInRange(user.uid, startDate, endDate);
 
       if (entries.length === 0) {
-        Alert.alert("Sem dados", "Nenhum registro encontrado no periodo selecionado.");
+        Alert.alert("Sem dados", "Nenhum registro encontrado no período selecionado.");
         return;
       }
 
@@ -76,7 +76,7 @@ export default function ReportScreen() {
 
   async function handleDelete(reportId: string) {
     if (!user) return;
-    Alert.alert("Excluir relatorio", "Tem certeza?", [
+    Alert.alert("Excluir relatório", "Tem certeza?", [
       { text: "Cancelar", style: "cancel" },
       {
         text: "Excluir",
@@ -93,7 +93,7 @@ export default function ReportScreen() {
     <ScrollView className="flex-1 bg-surface" contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="p-5">
         <Text className="text-text-muted text-body mb-4">
-          Selecione um periodo para gerar uma analise com IA dos seus dados de sono e habitos.
+          Selecione um período para gerar uma análise com IA dos seus dados de sono e hábitos.
         </Text>
 
         <DateRangePicker
@@ -120,7 +120,7 @@ export default function ReportScreen() {
             </View>
           ) : (
             <Text className="text-text-inverse font-semibold text-body">
-              Gerar Relatorio IA
+              Gerar Relatório IA
             </Text>
           )}
         </TouchableOpacity>
@@ -158,21 +158,21 @@ export default function ReportScreen() {
               className="rounded-button p-3 items-center mt-3 border border-border"
             >
               <Text className="text-text-muted font-semibold text-sm">
-                Ocultar relatorio
+                Ocultar relatório
               </Text>
             </TouchableOpacity>
           </>
         )}
 
         <Text className="text-text font-semibold text-heading-m mt-8 mb-4">
-          Relatorios salvos
+          Relatórios salvos
         </Text>
 
         {reportsLoading ? (
           <ActivityIndicator color="#FF7617" className="my-4" />
         ) : reports.length === 0 ? (
           <Text className="text-text-muted text-body text-center py-8">
-            Nenhum relatorio salvo ainda.
+            Nenhum relatório salvo ainda.
           </Text>
         ) : (
           reports.map((r) => (

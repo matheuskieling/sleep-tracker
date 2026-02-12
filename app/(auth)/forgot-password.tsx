@@ -36,7 +36,7 @@ export default function ForgotPasswordScreen() {
       if (err.code === "auth/user-not-found") {
         setError("Nenhuma conta encontrada com este email.");
       } else if (err.code === "auth/invalid-email") {
-        setError("Email invalido.");
+        setError("Email inválido.");
       } else if (err.code === "auth/too-many-requests") {
         setError("Muitas tentativas. Tente novamente mais tarde.");
       } else {
@@ -69,7 +69,7 @@ export default function ForgotPasswordScreen() {
             {success && (
               <View className="bg-success-light border border-success rounded-card p-4 mb-4">
                 <Text className="text-success-dark text-center text-sm">
-                  Email de recuperacao enviado! Verifique sua caixa de entrada.
+                  Email de recuperação enviado! Verifique sua caixa de entrada.
                 </Text>
               </View>
             )}
@@ -98,7 +98,7 @@ export default function ForgotPasswordScreen() {
                 <ActivityIndicator color="#FFFFFF" />
               ) : (
                 <Text className="text-text-inverse font-semibold text-body">
-                  Enviar Email de Recuperacao
+                  Enviar Email de Recuperação
                 </Text>
               )}
             </TouchableOpacity>

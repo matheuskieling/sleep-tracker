@@ -21,8 +21,8 @@ function getGreeting(): string {
 }
 
 function getFormattedDate(): string {
-  const days = ["Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"];
-  const months = ["Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  const days = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+  const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
   const d = new Date();
   return `${days[d.getDay()]}, ${d.getDate()} de ${months[d.getMonth()]}`;
 }
@@ -108,7 +108,7 @@ export default function DashboardScreen() {
 
         {/* Stats Section */}
         <Text className="text-heading-m text-text mb-3">
-          Ultimos 7 dias
+          Últimos 7 dias
         </Text>
 
         {entriesLoading ? (

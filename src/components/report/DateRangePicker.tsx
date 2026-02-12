@@ -96,7 +96,7 @@ export function DateRangePicker({
       <View className="flex-row gap-3">
         <View className="flex-1">
           <Text className="text-text text-sm font-semibold mb-2">
-            Data Inicio
+            Data Início
           </Text>
           <TouchableOpacity
             onPress={() => setShowPicker("start")}

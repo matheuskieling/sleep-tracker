@@ -16,7 +16,7 @@ export default function ReportDetailScreen() {
 
   async function handleDelete() {
     if (!user || !id) return;
-    Alert.alert("Excluir relatorio", "Tem certeza?", [
+    Alert.alert("Excluir relatório", "Tem certeza?", [
       { text: "Cancelar", style: "cancel" },
       {
         text: "Excluir",
@@ -32,7 +32,7 @@ export default function ReportDetailScreen() {
   if (loading) {
     return (
       <>
-        <Stack.Screen options={{ title: "Relatorio" }} />
+        <Stack.Screen options={{ title: "Relatório" }} />
         <View className="flex-1 bg-surface items-center justify-center">
           <ActivityIndicator size="large" color="#FF7617" />
         </View>
@@ -43,9 +43,9 @@ export default function ReportDetailScreen() {
   if (!report) {
     return (
       <>
-        <Stack.Screen options={{ title: "Relatorio" }} />
+        <Stack.Screen options={{ title: "Relatório" }} />
         <View className="flex-1 bg-surface items-center justify-center">
-          <Text className="text-text-muted text-sm">Relatorio nao encontrado.</Text>
+          <Text className="text-text-muted text-sm">Relatório não encontrado.</Text>
         </View>
       </>
     );
@@ -53,7 +53,7 @@ export default function ReportDetailScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Relatorio" }} />
+      <Stack.Screen options={{ title: "Relatório" }} />
       <ScrollView className="flex-1 bg-surface" contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}>
         <View className="p-5">
           <Text className="text-text text-body font-semibold mb-1">
@@ -74,7 +74,7 @@ export default function ReportDetailScreen() {
             className="rounded-button p-4 items-center mt-6 bg-danger-light border border-danger"
           >
             <Text className="text-danger-dark font-semibold text-sm">
-              Excluir relatorio
+              Excluir relatório
             </Text>
           </TouchableOpacity>
         </View>

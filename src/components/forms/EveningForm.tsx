@@ -102,14 +102,14 @@ export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
           options={sleepinessOptions}
           value={afternoonSleepiness}
           onChange={setAfternoonSleepiness}
-          label="Tive sono a tarde?"
+          label="Tive sono à tarde?"
         />
 
         {showSleepinessTime && (
           <TimeInput
             value={sleepinessTime}
             onChange={setSleepinessTime}
-            label="Horario do sono"
+            label="Horário do sono"
           />
         )}
 
@@ -119,20 +119,20 @@ export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
           options={mealSizeOptions}
           value={lunch}
           onChange={setLunch}
-          label="Almoco"
+          label="Almoço"
         />
 
-        <ToggleButton value={coffee} onChange={setCoffee} label="Cafe?" />
+        <ToggleButton value={coffee} onChange={setCoffee} label="Café?" />
 
         <ToggleButton value={sweets} onChange={setSweets} label="Doce?" />
 
-        <ToggleButton value={exercise} onChange={setExercise} label="Exercicio?" />
+        <ToggleButton value={exercise} onChange={setExercise} label="Exercício?" />
 
         <View className="mb-4">
           <TextInput
             value={observations}
             onChangeText={setObservations}
-            placeholder="Observacoes"
+            placeholder="Observações"
             placeholderTextColor="#A09389"
             multiline
             numberOfLines={4}

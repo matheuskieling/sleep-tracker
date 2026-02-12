@@ -34,11 +34,11 @@ export default function LoginScreen() {
       await signIn(email.trim(), password);
     } catch (err: any) {
       if (err.code === "auth/user-not-found") {
-        setError("Usuario nao encontrado.");
+        setError("Usuário não encontrado.");
       } else if (err.code === "auth/wrong-password") {
         setError("Senha incorreta.");
       } else if (err.code === "auth/invalid-email") {
-        setError("Email invalido.");
+        setError("Email inválido.");
       } else if (err.code === "auth/too-many-requests") {
         setError("Muitas tentativas. Tente novamente mais tarde.");
       } else {
@@ -120,7 +120,7 @@ export default function LoginScreen() {
 
             <View className="flex-row justify-center items-center">
               <Text className="text-text-muted text-sm">
-                Nao tem uma conta?{" "}
+                Não tem uma conta?{" "}
               </Text>
               <Link
                 href="/(auth)/register"

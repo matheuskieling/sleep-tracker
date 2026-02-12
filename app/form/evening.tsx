@@ -16,10 +16,10 @@ export default function EveningFormScreen() {
   ) => {
     try {
       await submitEveningEntry(user!.uid, data);
-      Alert.alert("Sucesso", "Formulario salvo!");
+      Alert.alert("Sucesso", "Formulário salvo!");
       router.back();
     } catch {
-      Alert.alert("Erro", "Nao foi possivel salvar. Tente novamente.");
+      Alert.alert("Erro", "Não foi possível salvar. Tente novamente.");
     }
   };
 
@@ -27,7 +27,7 @@ export default function EveningFormScreen() {
     <View className="flex-1 bg-surface">
       <Stack.Screen
         options={{
-          title: "Formulario da Noite",
+          title: "Como foi sua tarde?",
           headerStyle: { backgroundColor: "#F8F2EF" },
           headerTintColor: "#292D32",
           headerShadowVisible: false,

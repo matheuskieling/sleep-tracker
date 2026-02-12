@@ -49,7 +49,7 @@ export function ToggleButton({ value, onChange, label }: ToggleButtonProps) {
               !value ? "text-text-secondary" : "text-text-muted"
             }`}
           >
-            Nao
+            Não
           </Text>
         </TouchableOpacity>
       </View>

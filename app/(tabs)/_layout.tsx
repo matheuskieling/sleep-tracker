@@ -18,7 +18,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Inicio",
+          title: "Início",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
@@ -27,7 +27,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: "Historico",
+          title: "Histórico",
           headerShown: true,
           headerStyle: { backgroundColor: "#F8F2EF" },
           headerTintColor: "#292D32",
@@ -40,7 +40,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="report"
         options={{
-          title: "Relatorio",
+          title: "Relatório",
           headerShown: true,
           headerStyle: { backgroundColor: "#F8F2EF" },
           headerTintColor: "#292D32",

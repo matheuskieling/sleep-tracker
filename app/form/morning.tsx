@@ -16,10 +16,10 @@ export default function MorningFormScreen() {
   ) => {
     try {
       await submitMorningEntry(user!.uid, data);
-      Alert.alert("Sucesso", "Formulario salvo!");
+      Alert.alert("Sucesso", "Formulário salvo!");
       router.back();
     } catch {
-      Alert.alert("Erro", "Nao foi possivel salvar. Tente novamente.");
+      Alert.alert("Erro", "Não foi possível salvar. Tente novamente.");
     }
   };
 
@@ -27,7 +27,7 @@ export default function MorningFormScreen() {
     <View className="flex-1 bg-surface">
       <Stack.Screen
         options={{
-          title: "Formulario da Manha",
+          title: "Como foi sua noite?",
           headerStyle: { backgroundColor: "#F8F2EF" },
           headerTintColor: "#292D32",
           headerShadowVisible: false,

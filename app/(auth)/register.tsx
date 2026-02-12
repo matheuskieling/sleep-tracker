@@ -34,7 +34,7 @@ export default function RegisterScreen() {
     }
 
     if (password !== confirmPassword) {
-      setError("As senhas nao coincidem.");
+      setError("As senhas não coincidem.");
       return;
     }
 
@@ -51,11 +51,11 @@ export default function RegisterScreen() {
       await refreshUserName();
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
-        setError("Este email ja esta em uso.");
+        setError("Este email já está em uso.");
       } else if (err.code === "auth/invalid-email") {
-        setError("Email invalido.");
+        setError("Email inválido.");
       } else if (err.code === "auth/weak-password") {
-        setError("A senha e muito fraca. Use pelo menos 6 caracteres.");
+        setError("A senha é muito fraca. Use pelo menos 6 caracteres.");
       } else {
         setError("Erro ao criar conta. Tente novamente.");
       }
@@ -115,7 +115,7 @@ export default function RegisterScreen() {
             <TextInput
               ref={passwordRef}
               className="bg-surface-card border border-border text-text rounded-card p-4 mb-4"
-              placeholder="Minimo 6 caracteres"
+              placeholder="Mínimo 6 caracteres"
               placeholderTextColor="#A09389"
               value={password}
               onChangeText={setPassword}
@@ -158,7 +158,7 @@ export default function RegisterScreen() {
 
             <View className="flex-row justify-center items-center">
               <Text className="text-text-muted text-sm">
-                Ja tem uma conta?{" "}
+                Já tem uma conta?{" "}
               </Text>
               <Link
                 href="/(auth)/login"

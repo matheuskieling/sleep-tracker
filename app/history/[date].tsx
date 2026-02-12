@@ -60,10 +60,10 @@ function MorningSection({ data }: { data: MorningEntry }) {
       <InfoRow label="Qualidade do sono" value={SLEEP_QUALITY_LABELS[data.sleepQuality]} />
       <InfoRow label="Despertares noturnos" value={String(data.nightAwakenings)} />
       <InfoRow label="Jantar (noite anterior)" value={MEAL_SIZE_LABELS[data.dinner]} />
-      <InfoRow label="Sonolencia ao acordar" value={WAKE_SLEEPINESS_LABELS[data.wakeSleepiness]} />
+      <InfoRow label="Sonolência ao acordar" value={WAKE_SLEEPINESS_LABELS[data.wakeSleepiness]} />
       {data.observations ? (
         <View className="mt-3">
-          <Text className="text-text-muted text-sm mb-1">Observacoes</Text>
+          <Text className="text-text-muted text-sm mb-1">Observações</Text>
           <Text className="text-text text-sm">{data.observations}</Text>
         </View>
       ) : null}
@@ -83,22 +83,22 @@ function NoonSection({ data }: { data: NoonEntry }) {
         elevation: 2,
       }}
     >
-      <InfoRow label="Sonolencia pela manha" value={SLEEPINESS_LEVEL_LABELS[data.morningSleepiness]} />
+      <InfoRow label="Sonolência pela manhã" value={SLEEPINESS_LEVEL_LABELS[data.morningSleepiness]} />
       {data.sleepinessTime ? (
-        <InfoRow label="Horario da sonolencia" value={data.sleepinessTime} />
+        <InfoRow label="Horário da sonolência" value={data.sleepinessTime} />
       ) : null}
-      <InfoRow label="Dormiu" value={data.slept ? "Sim" : "Nao"} />
-      <InfoRow label="Tomou sol" value={data.sunlight ? "Sim" : "Nao"} />
-      <InfoRow label="Cafe da manha" value={MEAL_SIZE_LABELS[data.breakfast]} />
-      <InfoRow label="Cafe/cafeina" value={data.coffee ? "Sim" : "Nao"} />
-      <InfoRow label="Doces" value={data.sweets ? "Sim" : "Nao"} />
-      <InfoRow label="Exercicio" value={data.exercise ? "Sim" : "Nao"} />
+      <InfoRow label="Dormiu" value={data.slept ? "Sim" : "Não"} />
+      <InfoRow label="Tomou sol" value={data.sunlight ? "Sim" : "Não"} />
+      <InfoRow label="Café da manhã" value={MEAL_SIZE_LABELS[data.breakfast]} />
+      <InfoRow label="Café/cafeína" value={data.coffee ? "Sim" : "Não"} />
+      <InfoRow label="Doces" value={data.sweets ? "Sim" : "Não"} />
+      <InfoRow label="Exercício" value={data.exercise ? "Sim" : "Não"} />
       <InfoRow label="Foco" value={FOCUS_LEVEL_LABELS[data.focus]} />
       <InfoRow label="Estresse" value={STRESS_LEVEL_LABELS[data.stress]} />
       <InfoRow label="Ansiedade" value={ANXIETY_LEVEL_LABELS[data.anxiety]} />
       {data.observations ? (
         <View className="mt-3">
-          <Text className="text-text-muted text-sm mb-1">Observacoes</Text>
+          <Text className="text-text-muted text-sm mb-1">Observações</Text>
           <Text className="text-text text-sm">{data.observations}</Text>
         </View>
       ) : null}
@@ -118,21 +118,21 @@ function EveningSection({ data }: { data: EveningEntry }) {
         elevation: 2,
       }}
     >
-      <InfoRow label="Sonolencia a tarde" value={SLEEPINESS_LEVEL_LABELS[data.afternoonSleepiness]} />
+      <InfoRow label="Sonolência à tarde" value={SLEEPINESS_LEVEL_LABELS[data.afternoonSleepiness]} />
       {data.sleepinessTime ? (
-        <InfoRow label="Horario da sonolencia" value={data.sleepinessTime} />
+        <InfoRow label="Horário da sonolência" value={data.sleepinessTime} />
       ) : null}
-      <InfoRow label="Dormiu" value={data.slept ? "Sim" : "Nao"} />
-      <InfoRow label="Almoco" value={MEAL_SIZE_LABELS[data.lunch]} />
-      <InfoRow label="Cafe/cafeina" value={data.coffee ? "Sim" : "Nao"} />
-      <InfoRow label="Doces" value={data.sweets ? "Sim" : "Nao"} />
-      <InfoRow label="Exercicio" value={data.exercise ? "Sim" : "Nao"} />
+      <InfoRow label="Dormiu" value={data.slept ? "Sim" : "Não"} />
+      <InfoRow label="Almoço" value={MEAL_SIZE_LABELS[data.lunch]} />
+      <InfoRow label="Café/cafeína" value={data.coffee ? "Sim" : "Não"} />
+      <InfoRow label="Doces" value={data.sweets ? "Sim" : "Não"} />
+      <InfoRow label="Exercício" value={data.exercise ? "Sim" : "Não"} />
       <InfoRow label="Foco" value={FOCUS_LEVEL_LABELS[data.focus]} />
       <InfoRow label="Estresse" value={STRESS_LEVEL_LABELS[data.stress]} />
       <InfoRow label="Ansiedade" value={ANXIETY_LEVEL_LABELS[data.anxiety]} />
       {data.observations ? (
         <View className="mt-3">
-          <Text className="text-text-muted text-sm mb-1">Observacoes</Text>
+          <Text className="text-text-muted text-sm mb-1">Observações</Text>
           <Text className="text-text text-sm">{data.observations}</Text>
         </View>
       ) : null}
@@ -143,7 +143,7 @@ function EveningSection({ data }: { data: EveningEntry }) {
 function EmptySection({ title }: { title: string }) {
   return (
     <View className="bg-surface-input rounded-card p-4 items-center">
-      <Text className="text-text-muted text-sm">{title} nao preenchido</Text>
+      <Text className="text-text-muted text-sm">{title} não preenchido</Text>
     </View>
   );
 }
@@ -171,7 +171,7 @@ export default function EntryDetailScreen() {
       <>
         <Stack.Screen options={{ title: displayDate || "Detalhes" }} />
         <View className="flex-1 bg-surface items-center justify-center">
-          <Text className="text-text-muted text-sm">Registro nao encontrado.</Text>
+          <Text className="text-text-muted text-sm">Registro não encontrado.</Text>
         </View>
       </>
     );
@@ -190,7 +190,7 @@ export default function EntryDetailScreen() {
           {entry.morning ? (
             <MorningSection data={entry.morning} />
           ) : (
-            <EmptySection title="Formulario da manha" />
+            <EmptySection title="Formulário da manhã" />
           )}
 
           {/* Noon */}
@@ -198,7 +198,7 @@ export default function EntryDetailScreen() {
           {entry.noon ? (
             <NoonSection data={entry.noon} />
           ) : (
-            <EmptySection title="Formulario do meio-dia" />
+            <EmptySection title="Formulário do meio-dia" />
           )}
 
           {/* Evening */}
@@ -206,7 +206,7 @@ export default function EntryDetailScreen() {
           {entry.evening ? (
             <EveningSection data={entry.evening} />
           ) : (
-            <EmptySection title="Formulario da noite" />
+            <EmptySection title="Formulário da noite" />
           )}
         </View>
       </ScrollView>
