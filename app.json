@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#292D32"
+      "backgroundColor": "#652D07"
     },
     "ios": {
       "supportsTablet": true,
@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#292D32"
+        "backgroundColor": "#652D07"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.sleeptracker.app",
@@ -43,7 +43,14 @@
         }
       ],
       "@react-native-community/datetimepicker",
-      "expo-router"
+      "expo-router",
+      [
+        "./plugins/withNotificationIcon",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#FF7617"
+        }
+      ]
     ],
     "extra": {
       "eas": {
