@@ -57,7 +57,7 @@ export default function DashboardScreen() {
   );
 
   function handleFormPress(type: FormType) {
-    router.push(`/form/${type}` as any);
+    router.push({ pathname: `/form/${type}` as any, params: { date: selectedDate } });
   }
 
   function handleLogout() {

@@ -1,5 +1,5 @@
 import { Alert, View, ActivityIndicator } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 
 import { MorningForm } from "../../src/components/forms/MorningForm";
 import { submitMorningEntry } from "../../src/services/firestore";
@@ -9,13 +9,14 @@ import { useEntry } from "../../src/hooks/useEntry";
 export default function MorningFormScreen() {
   const { user } = useAuth();
   const router = useRouter();
-  const { entry, loading } = useEntry();
+  const { date } = useLocalSearchParams<{ date: string }>();
+  const { entry, loading } = useEntry(date);
 
   const handleSubmit = async (
     data: Parameters<typeof submitMorningEntry>[1]
   ) => {
     try {
-      await submitMorningEntry(user!.uid, data);
+      await submitMorningEntry(user!.uid, data, date);
       Alert.alert("Sucesso", "Formulário salvo!");
       router.back();
     } catch {

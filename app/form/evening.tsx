@@ -1,5 +1,5 @@
 import { Alert, View, ActivityIndicator } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 
 import { EveningForm } from "../../src/components/forms/EveningForm";
 import { submitEveningEntry } from "../../src/services/firestore";
@@ -9,13 +9,14 @@ import { useEntry } from "../../src/hooks/useEntry";
 export default function EveningFormScreen() {
   const { user } = useAuth();
   const router = useRouter();
-  const { entry, loading } = useEntry();
+  const { date } = useLocalSearchParams<{ date: string }>();
+  const { entry, loading } = useEntry(date);
 
   const handleSubmit = async (
     data: Parameters<typeof submitEveningEntry>[1]
   ) => {
     try {
-      await submitEveningEntry(user!.uid, data);
+      await submitEveningEntry(user!.uid, data, date);
       Alert.alert("Sucesso", "Formulário salvo!");
       router.back();
     } catch {

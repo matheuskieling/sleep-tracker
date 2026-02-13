@@ -52,9 +52,10 @@ export async function getEntry(
  */
 export async function submitMorningEntry(
   userId: string,
-  data: Omit<MorningEntry, "submittedAt">
+  data: Omit<MorningEntry, "submittedAt">,
+  dateString?: string
 ) {
-  const dateString = getTodayString();
+  dateString = dateString ?? getTodayString();
   const now = serverTimestamp();
 
   await setDoc(
@@ -77,9 +78,10 @@ export async function submitMorningEntry(
  */
 export async function submitNoonEntry(
   userId: string,
-  data: Omit<NoonEntry, "submittedAt">
+  data: Omit<NoonEntry, "submittedAt">,
+  dateString?: string
 ) {
-  const dateString = getTodayString();
+  dateString = dateString ?? getTodayString();
   const now = serverTimestamp();
 
   await setDoc(
@@ -101,9 +103,10 @@ export async function submitNoonEntry(
  */
 export async function submitEveningEntry(
   userId: string,
-  data: Omit<EveningEntry, "submittedAt">
+  data: Omit<EveningEntry, "submittedAt">,
+  dateString?: string
 ) {
-  const dateString = getTodayString();
+  dateString = dateString ?? getTodayString();
   const now = serverTimestamp();
 
   await setDoc(
