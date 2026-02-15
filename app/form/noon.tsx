@@ -2,7 +2,7 @@ import { Alert, View, ActivityIndicator } from "react-native";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 
 import { NoonForm } from "../../src/components/forms/NoonForm";
-import { submitNoonEntry } from "../../src/services/firestore";
+import { submitNoonEntry, clearFormSection } from "../../src/services/firestore";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useEntry } from "../../src/hooks/useEntry";
 import { toDisplayDateSlash } from "../../src/utils/date";
@@ -34,6 +34,16 @@ export default function NoonFormScreen() {
     }
   };
 
+  const handleClear = async () => {
+    try {
+      await clearFormSection(user!.uid, date, "noon");
+      Alert.alert("Sucesso", "Registro limpo com sucesso.");
+      router.back();
+    } catch {
+      Alert.alert("Erro", "Não foi possível limpar. Tente novamente.");
+    }
+  };
+
   return (
     <View className="flex-1 bg-surface">
       <Stack.Screen
@@ -49,7 +59,11 @@ export default function NoonFormScreen() {
           <ActivityIndicator size="large" color="#FF7617" />
         </View>
       ) : (
-        <NoonForm onSubmit={handleSubmit} initialData={entry?.noon} />
+        <NoonForm
+          onSubmit={handleSubmit}
+          initialData={entry?.noon}
+          onClear={entry?.noon ? handleClear : undefined}
+        />
       )}
     </View>
   );

@@ -7,6 +7,8 @@ import {
   setDoc,
   addDoc,
   deleteDoc,
+  updateDoc,
+  deleteField,
   query,
   where,
   orderBy,
@@ -165,6 +167,18 @@ export async function getDateStatus(
     noon: !!entry?.noon,
     evening: !!entry?.evening,
   };
+}
+
+/**
+ * Clear a specific form section from a day entry.
+ */
+export async function clearFormSection(
+  userId: string,
+  dateString: string,
+  section: "morning" | "noon" | "evening"
+) {
+  const entryRef = doc(entriesCollection(userId), dateString);
+  await updateDoc(entryRef, { [section]: deleteField() });
 }
 
 // --- Reports ---

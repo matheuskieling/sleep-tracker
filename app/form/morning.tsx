@@ -2,7 +2,7 @@ import { Alert, View, ActivityIndicator } from "react-native";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 
 import { MorningForm } from "../../src/components/forms/MorningForm";
-import { submitMorningEntry } from "../../src/services/firestore";
+import { submitMorningEntry, clearFormSection } from "../../src/services/firestore";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useEntry } from "../../src/hooks/useEntry";
 import { toDisplayDateSlash } from "../../src/utils/date";
@@ -34,6 +34,16 @@ export default function MorningFormScreen() {
     }
   };
 
+  const handleClear = async () => {
+    try {
+      await clearFormSection(user!.uid, date, "morning");
+      Alert.alert("Sucesso", "Registro limpo com sucesso.");
+      router.back();
+    } catch {
+      Alert.alert("Erro", "Não foi possível limpar. Tente novamente.");
+    }
+  };
+
   return (
     <View className="flex-1 bg-surface">
       <Stack.Screen
@@ -49,7 +59,11 @@ export default function MorningFormScreen() {
           <ActivityIndicator size="large" color="#FF7617" />
         </View>
       ) : (
-        <MorningForm onSubmit={handleSubmit} initialData={entry?.morning} />
+        <MorningForm
+          onSubmit={handleSubmit}
+          initialData={entry?.morning}
+          onClear={entry?.morning ? handleClear : undefined}
+        />
       )}
     </View>
   );

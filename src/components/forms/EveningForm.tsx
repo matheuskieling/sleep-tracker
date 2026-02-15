@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TextInput, View, Text } from "react-native";
+import { TextInput, View, Text, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -42,9 +43,10 @@ const anxietyOptions = labelsToOptions(ANXIETY_LEVEL_LABELS);
 interface EveningFormProps {
   onSubmit: (data: Omit<EveningEntry, "submittedAt">) => Promise<void>;
   initialData?: EveningEntry;
+  onClear?: () => Promise<void>;
 }
 
-export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
+export function EveningForm({ onSubmit, initialData, onClear }: EveningFormProps) {
   const insets = useSafeAreaInsets();
   const [afternoonSleepiness, setAfternoonSleepiness] = useState<string>(initialData?.afternoonSleepiness ?? "");
   const [sleepinessTime, setSleepinessTime] = useState<string | null>(initialData?.sleepinessTime ?? null);
@@ -58,6 +60,26 @@ export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
   const [stress, setStress] = useState<string>(initialData?.stress ?? "");
   const [anxiety, setAnxiety] = useState<string>(initialData?.anxiety ?? "");
   const [loading, setLoading] = useState(false);
+  const [clearing, setClearing] = useState(false);
+
+  const handleClear = () => {
+    if (!onClear) return;
+    Alert.alert("Limpar registro?", "Os dados desta seção serão removidos.", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Limpar",
+        style: "destructive",
+        onPress: async () => {
+          setClearing(true);
+          try {
+            await onClear();
+          } finally {
+            setClearing(false);
+          }
+        },
+      },
+    ]);
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -168,6 +190,25 @@ export function EveningForm({ onSubmit, initialData }: EveningFormProps) {
       </FormCard>
 
       <SubmitButton onPress={handleSubmit} loading={loading} label="Enviar" />
+
+      {onClear && (
+        <TouchableOpacity
+          onPress={handleClear}
+          disabled={clearing}
+          className="border border-danger rounded-full py-5 mt-3 mb-8"
+          accessibilityRole="button"
+          accessibilityState={{ disabled: clearing }}
+        >
+          {clearing ? (
+            <ActivityIndicator color="#E53935" />
+          ) : (
+            <View className="flex-row items-center justify-center gap-2">
+              <Ionicons name="trash-outline" size={20} color="#E53935" />
+              <Text className="text-danger text-lg font-bold">Limpar Registro</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      )}
     </KeyboardAwareScrollView>
   );
 }
