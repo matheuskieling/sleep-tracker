@@ -5,11 +5,21 @@ import { NoonForm } from "../../src/components/forms/NoonForm";
 import { submitNoonEntry } from "../../src/services/firestore";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useEntry } from "../../src/hooks/useEntry";
+import { toDisplayDateSlash } from "../../src/utils/date";
 
 export default function NoonFormScreen() {
   const { user } = useAuth();
   const router = useRouter();
-  const { date } = useLocalSearchParams<{ date: string }>();
+  const { date: dateParam } = useLocalSearchParams<{ date: string }>();
+
+  if (typeof dateParam !== "string") {
+    Alert.alert("Erro", "Data não encontrada.", [
+      { text: "OK", onPress: () => router.back() },
+    ]);
+    return null;
+  }
+
+  const date = dateParam;
   const { entry, loading } = useEntry(date);
 
   const handleSubmit = async (
@@ -17,7 +27,7 @@ export default function NoonFormScreen() {
   ) => {
     try {
       await submitNoonEntry(user!.uid, data, date);
-      Alert.alert("Sucesso", "Formulário salvo!");
+      Alert.alert("Sucesso", `Formulário do dia ${toDisplayDateSlash(date)} salvo!`);
       router.back();
     } catch {
       Alert.alert("Erro", "Não foi possível salvar. Tente novamente.");

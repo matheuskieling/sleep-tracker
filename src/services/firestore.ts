@@ -53,16 +53,14 @@ export async function getEntry(
 export async function submitMorningEntry(
   userId: string,
   data: Omit<MorningEntry, "submittedAt">,
-  dateString?: string
+  dateString: string
 ) {
-  dateString = dateString ?? getTodayString();
   const now = serverTimestamp();
 
   await setDoc(
     doc(entriesCollection(userId), dateString),
     {
       dateString,
-      createdAt: now,
       updatedAt: now,
       morning: {
         ...data,
@@ -79,9 +77,8 @@ export async function submitMorningEntry(
 export async function submitNoonEntry(
   userId: string,
   data: Omit<NoonEntry, "submittedAt">,
-  dateString?: string
+  dateString: string
 ) {
-  dateString = dateString ?? getTodayString();
   const now = serverTimestamp();
 
   await setDoc(
@@ -104,9 +101,8 @@ export async function submitNoonEntry(
 export async function submitEveningEntry(
   userId: string,
   data: Omit<EveningEntry, "submittedAt">,
-  dateString?: string
+  dateString: string
 ) {
-  dateString = dateString ?? getTodayString();
   const now = serverTimestamp();
 
   await setDoc(

@@ -149,7 +149,8 @@ function EmptySection({ title }: { title: string }) {
 }
 
 export default function EntryDetailScreen() {
-  const { date } = useLocalSearchParams<{ date: string }>();
+  const { date: dateParam } = useLocalSearchParams<{ date: string }>();
+  const date = typeof dateParam === "string" ? dateParam : "";
   const { entry, loading } = useEntry(date);
   const insets = useSafeAreaInsets();
 

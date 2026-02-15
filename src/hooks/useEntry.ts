@@ -7,25 +7,22 @@ import {
   getTodayStatus,
   getDateStatus,
 } from "../services/firestore";
-import { getTodayString } from "../utils/date";
 
-export function useEntry(dateString?: string) {
+export function useEntry(dateString: string) {
   const { user } = useAuth();
   const [entry, setEntry] = useState<DayEntry | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const date = dateString ?? getTodayString();
 
   const refresh = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
-      const data = await getEntry(user.uid, date);
+      const data = await getEntry(user.uid, dateString);
       setEntry(data);
     } finally {
       setLoading(false);
     }
-  }, [user, date]);
+  }, [user, dateString]);
 
   useEffect(() => {
     refresh();
